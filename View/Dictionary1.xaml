@@ -63,22 +63,20 @@
         </Setter>
     </Style>
     <LinearGradientBrush x:Key="mainBckgr" EndPoint="0.5,1" StartPoint="0.5,0">
-        <GradientStop Color="Black" Offset="0"/>
+        <GradientStop Color="#FF02021B" Offset="0"/>
         <GradientStop Color="#FF082A5B" Offset="1"/>
     </LinearGradientBrush>
-    <SolidColorBrush x:Key="textColor" Color="#FF11949B"/>
-    <Style x:Key="toolTipStyle" TargetType="{x:Type ToolTip}">
-        <Setter Property="Background" Value="{StaticResource mainBckgr}"/>
-        <Setter Property="Foreground" Value="Yellow"/>
+    <SolidColorBrush x:Key="mainBtnColor" Color="#FF11949B"/>
+    <Style x:Key="BlackNavy">
+        <Setter Property="Control.Background"  Value="{StaticResource mainBckgr}"/>
+        <Setter Property="Control.Foreground"  Value="Yellow"/>
     </Style>
-    <Style x:Key="headerStyle" TargetType="{x:Type GridViewColumnHeader}">
-        <Setter Property="Background" Value="{StaticResource mainBckgr}"/>
-        <Setter Property="Foreground" Value="Yellow"/>
-    </Style>
-    <Style x:Key="listViewStyle" TargetType="{x:Type ListView}">
+    <Style x:Key="listViewStyle" TargetType="{x:Type ListView}" BasedOn="{StaticResource ResourceKey=BlackNavy}">
         <Setter Property="BorderBrush" Value="#FF07C75E"/>
-        <Setter Property="Background" Value="{StaticResource mainBckgr}"/>
-        <Setter Property="Foreground" Value="Yellow"/>
+    </Style>
+    <Style x:Key="headerText" TargetType="TextBlock" BasedOn="{StaticResource ResourceKey=BlackNavy}">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
     <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
         <!--<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
