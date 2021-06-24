@@ -16,11 +16,20 @@
                     <i:EventTrigger EventName="MouseLeftButtonDown">
                         <i:InvokeCommandAction Command="{Binding DragCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
                     </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseRightButtonDown">
-                        <i:InvokeCommandAction Command="{Binding ResetBankCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
-                    </i:EventTrigger>
                 </i:Interaction.Triggers>
-                <TextBlock x:Name="bankName" Foreground="LightGreen" VerticalAlignment="Center" Text="{Binding BankName}" >
+                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "Bank "/>
+                <TextBlock x:Name="bankName" Foreground="LightGreen" VerticalAlignment="Center" Text= "{Binding BankName}" >
+                    <TextBlock.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Edit">
+                                <TextBox Text="{Binding BankName}">
+                                    <TextBox.ToolTip>
+                                        Имя банка
+                                    </TextBox.ToolTip>
+                                </TextBox>
+                            </MenuItem>
+                        </ContextMenu>
+                    </TextBlock.ContextMenu>
                 </TextBlock>
                 <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" >
                     <Button x:Name="CloseButton" Background="Transparent" BorderBrush="Transparent" Style="{StaticResource ButtonStyle1}">
@@ -59,6 +68,13 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
+                    <Button Foreground="{StaticResource mainBtnColor}" Background="Transparent" BorderBrush="Transparent" Content="Random Bank">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding ResetBankCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    </Button>
                 </StackPanel>
             </DockPanel>
             <Grid Background="Transparent">
@@ -78,7 +94,7 @@
                           ItemContainerStyle="{DynamicResource ListViewItemStyle1}" >
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding DepSelectedCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
+                            <i:InvokeCommandAction Command="{Binding DepSelectedCommand}" CommandParameter="{Binding ElementName= mainWnd}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <ListView.ToolTip>

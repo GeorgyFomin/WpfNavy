@@ -12,15 +12,18 @@ namespace ClassLibrary
         /// </summary>
         public static readonly string header = string.Format("Name");
         /// <summary>
-        /// Устанавливает и возвращает имя отдела.
+        /// Хранит текущее значение имени.
         /// </summary>
-        public string Name { get; set; }
-        public string NameField => $"{Name}";
+        private string name = "Noname";
+        /// <summary>
+        /// Устанавливает и возвращает имя.
+        /// </summary>
+        public string Name { get => name; set => name = string.IsNullOrEmpty(value) ? "Noname" : value; }
         /// <summary>
         /// Инициализирует поля.
         /// </summary>
         /// <param name="name"></param>
-        public Named(string name = null) : base() => Name = string.IsNullOrEmpty(name) ? "Noname" : name;
+        public Named(string name = null) : base() => Name = name;
         /// <summary>
         /// Перекрывает унаследованный метод текстового представления объекта.
         /// </summary>
@@ -29,8 +32,8 @@ namespace ClassLibrary
         /// <summary>
         /// Готовит текстовое представление информации об отделе.
         /// </summary>
-        /// <returns>Возвращает текстовое представление информации об отделе.</returns>
-        public string Info => string.Format(header + "\n" + NameField);
+        /// <returns>Возвращает текстовое представление информации.</returns>
+        public string Info => string.Format(header + "\n" + Name);
         #region Printing
         /// <summary>
         /// Печатает заголовок полей объекта.
@@ -41,7 +44,7 @@ namespace ClassLibrary
         /// Печатает поля объекта.
         /// </summary>
         /// <param name="tw">Райтер.</param>
-        public void PrintFields(TextWriter tw) => tw.WriteLine(NameField);
+        public void PrintFields(TextWriter tw) => tw.WriteLine(Name);
         #endregion
 
     }

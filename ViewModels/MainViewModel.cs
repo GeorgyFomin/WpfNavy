@@ -24,7 +24,14 @@ namespace WpfNavy.ViewModels
         private RelayCommand clientSelectedCommand;
         #endregion
         #region Properties
-        public string BankName { get => bankName; private set { bankName = value; RaisePropertyChanged(nameof(BankName)); } }
+        public string BankName
+        {
+            get => bankName; set
+            {
+                if (string.IsNullOrEmpty(value)) return;
+                bank.Name = value; bankName = bank.Name; RaisePropertyChanged(nameof(BankName));
+            }
+        }
         public List<Dep> Deps { get => deps; private set { deps = value; RaisePropertyChanged(nameof(Deps)); } }
         public List<Client> Clients { get => clients; private set { clients = value; RaisePropertyChanged(nameof(Clients)); } }
         public List<Account> Accounts { get => accounts; private set { accounts = value; RaisePropertyChanged(nameof(Accounts)); } }
@@ -40,7 +47,7 @@ namespace WpfNavy.ViewModels
         private void ResetBank()
         {
             bank = RandomBank.GetBank();
-            BankName = "Bank " + bank.Name;
+            BankName = bank.Name;
             Deps = bank.Deps;
         }
         #region Handlers
