@@ -92,6 +92,17 @@
                 <TextBlock Grid.Column="2" Text="Accounts" Style="{StaticResource headerText}"/>
                 <ListView x:Name="depListView" Grid.Row="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Deps}"
                           ItemContainerStyle="{DynamicResource ListViewItemStyle1}" >
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Add">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding AddDepCommand}" CommandParameter="{Binding ElementName= mainWnd}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </MenuItem>
+                        </ContextMenu>
+                    </ListView.ContextMenu>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction Command="{Binding DepSelectedCommand}" CommandParameter="{Binding ElementName= mainWnd}"/>
@@ -116,7 +127,6 @@
                             <i:InvokeCommandAction Command="{Binding ClientSelectedCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-
                     <ListView.ToolTip>
                         <ToolTip Style="{StaticResource ResourceKey=BlackNavy}" >
                             Клиенты

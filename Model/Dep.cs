@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace ClassLibrary
@@ -8,15 +9,15 @@ namespace ClassLibrary
         /// <summary>
         /// Хранит список клиентов.
         /// </summary>
-        private List<Client> clients = new List<Client>();
+        private ObservableCollection<Client> clients = new ObservableCollection<Client>();
         #region Properties
         /// <summary>
         /// Устанавливает и возвращает ссылки на клиентов.
         /// </summary>
-        public List<Client> Clients { get => clients; set => clients = value ?? new List<Client>(); }
+        public ObservableCollection<Client> Clients { get => clients; set => clients = value ?? new ObservableCollection<Client>(); }
         public Dep() : base() { }
         #endregion
-        public Dep(string name = null, List<Client> clients = null) : base(name)
+        public Dep(string name = null, ObservableCollection<Client> clients = null) : base(name)
         {
             Clients = clients;
         }

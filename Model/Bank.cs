@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace ClassLibrary
@@ -8,13 +9,13 @@ namespace ClassLibrary
         /// <summary>
         /// Хранит список отделов банка.
         /// </summary>
-        private List<Dep> deps = new List<Dep>();
+        private ObservableCollection<Dep> deps = new ObservableCollection<Dep>();
         /// <summary>
         /// Устанавливает и возвращает ссылки на отделы банка.
         /// </summary>
-        public List<Dep> Deps { get => deps; set { deps = value ?? new List<Dep>(); } }
+        public ObservableCollection<Dep> Deps { get => deps; set { deps = value ?? new ObservableCollection<Dep>(); } }
         public Bank() : base() { }
-        public Bank(string name = null, List<Dep> deps = null) : base(name) => Deps = deps;
+        public Bank(string name = null, ObservableCollection<Dep> deps = null) : base(name) => Deps = deps;
         public override string ToString()
         {
             return "Bank " + base.ToString();
@@ -22,11 +23,11 @@ namespace ClassLibrary
         /// <summary>
         /// Возвращает список всех депозитов банка.
         /// </summary>
-        public List<Account> Deposits
+        public ObservableCollection<Account> Deposits
         {
             get
             {
-                List<Account> deposits = new List<Account>();
+                ObservableCollection<Account> deposits = new ObservableCollection<Account>();
                 foreach (Dep dep in deps)
                 {
                     foreach (Client client in dep.Clients)
@@ -44,11 +45,11 @@ namespace ClassLibrary
         /// <summary>
         /// Возвращает список всех кредитов банка.
         /// </summary>
-        public List<Account> Loans
+        public ObservableCollection<Account> Loans
         {
             get
             {
-                List<Account> loans = new List<Account>();
+                ObservableCollection<Account> loans = new ObservableCollection<Account>();
                 foreach (Dep dep in deps)
                 {
                     foreach (Client client in dep.Clients)
@@ -66,14 +67,18 @@ namespace ClassLibrary
         /// <summary>
         /// Возвращает список всех клиентов банка.
         /// </summary>
-        public List<Client> Clients
+        public ObservableCollection<Client> Clients
         {
             get
             {
-                List<Client> clients = new List<Client>();
+                ObservableCollection<Client> clients = new ObservableCollection<Client>();
                 foreach (Dep dep in Deps)
                 {
-                    clients.AddRange(dep.Clients);
+                    foreach (Client client in dep.Clients)
+                    {
+                        clients.Add(client);
+
+                    }
                 }
                 return clients;
             }

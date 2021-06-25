@@ -1,6 +1,7 @@
 ﻿using ClassLibrary;
 using FontAwesome.Sharp;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using WpfNavy.Commands;
@@ -11,9 +12,9 @@ namespace WpfNavy.ViewModels
     {
         #region Fields
         private Bank bank;
-        private List<Dep> deps;
-        private List<Client> clients;
-        private List<Account> accounts;
+        private ObservableCollection<Dep> deps;
+        private ObservableCollection<Client> clients;
+        private ObservableCollection<Account> accounts;
         private string bankName;
         private RelayCommand dragCommand;
         private RelayCommand minimizeCommand;
@@ -22,19 +23,21 @@ namespace WpfNavy.ViewModels
         private RelayCommand resetBankCommand;
         private RelayCommand depSelectedCommand;
         private RelayCommand clientSelectedCommand;
+        private RelayCommand addDepCommand;
         #endregion
         #region Properties
         public string BankName
         {
-            get => bankName; set
+            get => bankName;
+            set
             {
                 if (string.IsNullOrEmpty(value)) return;
                 bank.Name = value; bankName = bank.Name; RaisePropertyChanged(nameof(BankName));
             }
         }
-        public List<Dep> Deps { get => deps; private set { deps = value; RaisePropertyChanged(nameof(Deps)); } }
-        public List<Client> Clients { get => clients; private set { clients = value; RaisePropertyChanged(nameof(Clients)); } }
-        public List<Account> Accounts { get => accounts; private set { accounts = value; RaisePropertyChanged(nameof(Accounts)); } }
+        public ObservableCollection<Dep> Deps { get => deps; set { bank.Deps = value; deps = bank.Deps; RaisePropertyChanged(nameof(Deps)); } }
+        public ObservableCollection<Client> Clients { get => clients; private set { clients = value; RaisePropertyChanged(nameof(Clients)); } }
+        public ObservableCollection<Account> Accounts { get => accounts; private set { accounts = value; RaisePropertyChanged(nameof(Accounts)); } }
         public ICommand DragCommand => dragCommand ?? (dragCommand = new RelayCommand(Drag));
         public ICommand MinimizeCommand => minimizeCommand ?? (minimizeCommand = new RelayCommand(Minimize));
         public ICommand MaximizeCommand => maximizeCommand ?? (maximizeCommand = new RelayCommand(Maximize));
@@ -42,6 +45,8 @@ namespace WpfNavy.ViewModels
         public ICommand ResetBankCommand => resetBankCommand ?? (resetBankCommand = new RelayCommand(ResetBank));
         public ICommand DepSelectedCommand => depSelectedCommand ?? (depSelectedCommand = new RelayCommand(DepSelected));
         public ICommand ClientSelectedCommand => clientSelectedCommand ?? (clientSelectedCommand = new RelayCommand(ClientSelected));
+        public ICommand AddDepCommand => addDepCommand ?? (addDepCommand = new RelayCommand(AddDep));
+
         #endregion
         public MainViewModel() => ResetBank();
         private void ResetBank()
@@ -65,6 +70,10 @@ namespace WpfNavy.ViewModels
             Clients = ((commandParameter as MainWindow).depListView.SelectedItem is Dep dep) ? dep.Clients : null;
         private void ClientSelected(object commandParameter) =>
             Accounts = ((commandParameter as MainWindow).clientListView.SelectedItem is Client client) ? client.Accounts : null;
+        private void AddDep(object commandParameter)
+        {
+            Deps.Add(new Dep());
+        }
         #endregion
     }
 }
