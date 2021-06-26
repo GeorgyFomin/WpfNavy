@@ -69,11 +69,11 @@
                         </Button.Content>
                     </Button>
                     <Button Foreground="{StaticResource mainBtnColor}" Background="Transparent" BorderBrush="Transparent" Content="Random Bank">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction Command="{Binding ResetBankCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding ResetBankCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </Button>
                 </StackPanel>
             </DockPanel>
@@ -90,8 +90,21 @@
                 <TextBlock Grid.Column="0" Text="Departments" Style="{StaticResource headerText}" />
                 <TextBlock Grid.Column="1" Text="Clients" Style="{StaticResource headerText}" />
                 <TextBlock Grid.Column="2" Text="Accounts" Style="{StaticResource headerText}"/>
-                <ListView x:Name="depListView" Grid.Row="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Deps}"
-                          ItemContainerStyle="{DynamicResource ListViewItemStyle1}" >
+                <ListView x:Name="depListView" Grid.Row="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Deps}">
+                    <!--ItemContainerStyle="{DynamicResource ListViewItemStyle1}"-->
+
+                    <ListView.Resources>
+                        <ContextMenu x:Key="ItemContextMenu">
+                            <MenuItem Header="Edit">
+                                <TextBox Text="{Binding ElementName=depNameColumn,Path=DisplayMemberBinding}"/>
+                            </MenuItem>
+                        </ContextMenu>
+                    </ListView.Resources>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource ListViewItemStyle1}">
+                            <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Add">
