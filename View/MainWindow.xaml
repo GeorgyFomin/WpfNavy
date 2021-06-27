@@ -88,13 +88,13 @@
                         <MenuItem Header="Edit">
                             <TextBox Text="{Binding Name}"/>
                         </MenuItem>
-                        <MenuItem Header="Remove">
+                        <!--<MenuItem Header="Remove">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <i:InvokeCommandAction Command="{Binding RemoveDepCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                        </MenuItem>
+                        </MenuItem>-->
                     </ContextMenu>
                 </ListView.Resources>
                 <ListView.ItemContainerStyle>
@@ -115,7 +115,7 @@
                 </ListView.ContextMenu>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding DepSelectedCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
+                        <i:InvokeCommandAction Command="{Binding DepSelectedCommand}" CommandParameter="{Binding ElementName=depListView}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ListView.ToolTip>
@@ -144,13 +144,13 @@
                         <MenuItem Header="Edit">
                             <TextBox Text="{Binding Name}"/>
                         </MenuItem>
-                        <MenuItem Header="Remove">
+                        <!--<MenuItem Header="Remove">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <i:InvokeCommandAction Command="{Binding RemoveClientCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                        </MenuItem>
+                        </MenuItem>-->
                     </ContextMenu>
                 </ListView.Resources>
                 <ListView.ItemContainerStyle>
@@ -160,7 +160,7 @@
                 </ListView.ItemContainerStyle>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding ClientSelectedCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
+                        <i:InvokeCommandAction Command="{Binding ClientSelectedCommand}" CommandParameter="{Binding ElementName=clientListView}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ListView.ToolTip>
@@ -196,13 +196,13 @@
                             <TextBox Text="{Binding Rate}"/>
                             <CheckBox IsChecked="{Binding Cap}"/>
                         </MenuItem>
-                        <MenuItem Header="Remove">
+                        <!--<MenuItem Header="Remove">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <i:InvokeCommandAction Command="{Binding RemoveAccCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                        </MenuItem>
+                        </MenuItem>-->
                     </ContextMenu>
                 </ListView.Resources>
                 <ListView.ItemContainerStyle>
