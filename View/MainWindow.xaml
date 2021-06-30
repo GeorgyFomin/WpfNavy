@@ -87,6 +87,10 @@
                     <ContextMenu>
                         <MenuItem Header="Add" Command="{Binding AddDepCommand}"/>
                         <MenuItem Header="Remove" Command="{Binding RemoveDepCommand}" IsEnabled="{Binding RemoveDepEnabled}" />
+                        <MenuItem Header="Sorting" Click="MenuItem_Click">
+                            <!--<MenuItem Header="In ascending order" Command="{Binding AscDepSortingCommand}"/>
+                            <MenuItem Header="In descending order" Command="{Binding DscDepSortingCommand}"/>-->
+                        </MenuItem>
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.Resources>

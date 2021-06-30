@@ -111,6 +111,7 @@ namespace WpfNavy.ViewModels
                 Client.Accounts.Remove(Account);
             }
         }
+
         #endregion
     }
 }
