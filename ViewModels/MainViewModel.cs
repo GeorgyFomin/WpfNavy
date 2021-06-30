@@ -33,6 +33,9 @@ namespace WpfNavy.ViewModels
         private RelayCommand removeClientCommand;
         private RelayCommand removeAccCommand;
         private RelayCommand accSelectedCommand;
+        private bool removeClientEnabled;
+        private bool removeAccEnabled;
+        private bool removeDepEnabled;
         #endregion
         #region Properties
         public Bank Bank { get => bank; set { bank = value; RaisePropertyChanged(nameof(Bank)); } }
@@ -41,6 +44,9 @@ namespace WpfNavy.ViewModels
         public Account Account { get => account; set { account = value; RaisePropertyChanged(nameof(Account)); } }
         public ObservableCollection<Client> Clients { get => clients; private set { clients = value; RaisePropertyChanged(nameof(Clients)); } }
         public ObservableCollection<Account> Accounts { get => accounts; private set { accounts = value; RaisePropertyChanged(nameof(Accounts)); } }
+        public bool RemoveAccEnabled { get => removeAccEnabled; private set { removeAccEnabled = value; RaisePropertyChanged(nameof(RemoveAccEnabled)); } }
+        public bool RemoveClientEnabled { get => removeClientEnabled; private set { removeClientEnabled = value; RaisePropertyChanged(nameof(RemoveClientEnabled)); } }
+        public bool RemoveDepEnabled { get => removeDepEnabled; private set { removeDepEnabled = value; RaisePropertyChanged(nameof(RemoveDepEnabled)); } }
         public ICommand DragCommand => dragCommand ?? (dragCommand = new RelayCommand(Drag));
         public ICommand MinimizeCommand => minimizeCommand ?? (minimizeCommand = new RelayCommand(Minimize));
         public ICommand MaximizeCommand => maximizeCommand ?? (maximizeCommand = new RelayCommand(Maximize));
@@ -55,9 +61,15 @@ namespace WpfNavy.ViewModels
         public ICommand RemoveClientCommand => removeClientCommand ?? (removeClientCommand = new RelayCommand(RemoveClient));
         public ICommand RemoveAccCommand => removeAccCommand ?? (removeAccCommand = new RelayCommand(RemoveAcc));
         public ICommand AccSelectedCommand => accSelectedCommand ?? (accSelectedCommand = new RelayCommand(AccSelected));
+
         #endregion
         public MainViewModel() => ResetBank();
-        private void ResetBank() => Bank = RandomBank.GetBank();
+        private void ResetBank()
+        {
+            Bank = RandomBank.GetBank();
+            Account = null; Dep = null; Client = null;
+            RemoveDepEnabled = RemoveClientEnabled = RemoveAccEnabled = false;
+        }
         #region Handlers
         private void Drag(object commandParameter) => (commandParameter as MainWindow).DragMove();
         private void Minimize(object commandParameter) => (commandParameter as MainWindow).WindowState = WindowState.Minimized;
@@ -70,11 +82,11 @@ namespace WpfNavy.ViewModels
         private void Close(object commandParameter) => (commandParameter as MainWindow).Close();
         private void ResetBank(object commandParameter) => ResetBank();
         private void DepSelected(object commandParameter) =>
-            Clients = (commandParameter as ListView).SelectedItem is Dep dep ? (Dep = dep).Clients : null;
+            RemoveDepEnabled = (Clients = (commandParameter as ListView).SelectedItem is Dep dep ? (Dep = dep).Clients : null) != null;
         private void ClientSelected(object commandParameter) =>
-            Accounts = (commandParameter as ListView).SelectedItem is Client client ? (Client = client).Accounts : null;
+            RemoveClientEnabled = (Accounts = (commandParameter as ListView).SelectedItem is Client client ? (Client = client).Accounts : null) != null;
         private void AccSelected(object commandParameter) =>
-            Account = ((commandParameter as ListView).SelectedItem is Account account) ? account : null;
+            RemoveAccEnabled = (Account = ((commandParameter as ListView).SelectedItem is Account account) ? account : null) != null;
         private void AddDep(object commandParameter) => Bank.Deps.Add(new Dep());
         private void AddClient(object commandParameter) => Dep.Clients.Add(new Client());
         private void AddAccount(object commandParameter) => Client.Accounts.Add(new Account());
@@ -83,7 +95,6 @@ namespace WpfNavy.ViewModels
             if (Dep != null && MessageBox.Show("Удалить отдел?", "Удаление отдела " + Dep.Name, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 Bank.Deps.Remove(Dep);
-                Dep = null;
             }
         }
         private void RemoveClient(object commandParameter)
@@ -91,7 +102,6 @@ namespace WpfNavy.ViewModels
             if (Client != null && MessageBox.Show("Удалить клиента?", "Удаление клиента " + Client.Name, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 Dep.Clients.Remove(Client);
-                Client = null;
             }
         }
         private void RemoveAcc(object commandParameter)
@@ -99,7 +109,6 @@ namespace WpfNavy.ViewModels
             if (Account != null && MessageBox.Show("Удалить счет?", "Удаление счета " + Account.Number, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 Client.Accounts.Remove(Account);
-                Account = null;
             }
         }
         #endregion

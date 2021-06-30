@@ -86,7 +86,7 @@
                 <ListView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Add" Command="{Binding AddDepCommand}"/>
-                        <MenuItem Header="Remove" Command="{Binding RemoveDepCommand}" />
+                        <MenuItem Header="Remove" Command="{Binding RemoveDepCommand}" IsEnabled="{Binding RemoveDepEnabled}" />
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.Resources>
@@ -119,7 +119,7 @@
                 <ListView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Add" Command="{Binding AddClientCommand}"/>
-                        <MenuItem Header="Remove" Command="{Binding RemoveClientCommand}"/>
+                        <MenuItem Header="Remove" Command="{Binding RemoveClientCommand}" IsEnabled="{Binding RemoveClientEnabled}" />
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.Resources>
@@ -157,7 +157,7 @@
                 <ListView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Add" Command="{Binding AddAccountCommand}"/>
-                        <MenuItem Header="Remove" Command="{Binding RemoveAccCommand}"/>
+                        <MenuItem Header="Remove" Command="{Binding RemoveAccCommand}" IsEnabled="{Binding RemoveAccEnabled}"/>
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.Resources>
