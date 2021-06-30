@@ -83,18 +83,17 @@
             <TextBlock Grid.Column="1" Text="Clients" Style="{StaticResource headerText}" />
             <TextBlock Grid.Column="2" Text="Accounts" Style="{StaticResource headerText}"/>
             <ListView x:Name="depListView" Grid.Row="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Bank.Deps}">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add" Command="{Binding AddDepCommand}"/>
+                        <MenuItem Header="Remove" Command="{Binding RemoveDepCommand}" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 <ListView.Resources>
                     <ContextMenu x:Key="ItemContextMenu">
                         <MenuItem Header="Edit">
                             <TextBox Text="{Binding Name}"/>
                         </MenuItem>
-                        <!--<MenuItem Header="Remove">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <i:InvokeCommandAction Command="{Binding RemoveDepCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </MenuItem>-->
                     </ContextMenu>
                 </ListView.Resources>
                 <ListView.ItemContainerStyle>
@@ -102,17 +101,6 @@
                         <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
                     </Style>
                 </ListView.ItemContainerStyle>
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Add">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <i:InvokeCommandAction Command="{Binding AddDepCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </MenuItem>
-                    </ContextMenu>
-                </ListView.ContextMenu>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding DepSelectedCommand}" CommandParameter="{Binding ElementName=depListView}"/>
@@ -130,13 +118,8 @@
             <ListView x:Name="clientListView" Grid.Row="1" Grid.Column="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Clients}">
                 <ListView.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Add">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <i:InvokeCommandAction Command="{Binding AddClientCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </MenuItem>
+                        <MenuItem Header="Add" Command="{Binding AddClientCommand}"/>
+                        <MenuItem Header="Remove" Command="{Binding RemoveClientCommand}"/>
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.Resources>
@@ -144,13 +127,6 @@
                         <MenuItem Header="Edit">
                             <TextBox Text="{Binding Name}"/>
                         </MenuItem>
-                        <!--<MenuItem Header="Remove">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <i:InvokeCommandAction Command="{Binding RemoveClientCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </MenuItem>-->
                     </ContextMenu>
                 </ListView.Resources>
                 <ListView.ItemContainerStyle>
@@ -175,18 +151,13 @@
             <ListView x:Name="accListView" Grid.Row="1" Grid.Column="2" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Accounts}" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding AccSelectedCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
+                        <i:InvokeCommandAction Command="{Binding AccSelectedCommand}" CommandParameter="{Binding ElementName=accListView}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ListView.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Add">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <i:InvokeCommandAction Command="{Binding AddAccountCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </MenuItem>
+                        <MenuItem Header="Add" Command="{Binding AddAccountCommand}"/>
+                        <MenuItem Header="Remove" Command="{Binding RemoveAccCommand}"/>
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.Resources>
@@ -196,13 +167,6 @@
                             <TextBox Text="{Binding Rate}"/>
                             <CheckBox IsChecked="{Binding Cap}"/>
                         </MenuItem>
-                        <!--<MenuItem Header="Remove">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <i:InvokeCommandAction Command="{Binding RemoveAccCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </MenuItem>-->
                     </ContextMenu>
                 </ListView.Resources>
                 <ListView.ItemContainerStyle>

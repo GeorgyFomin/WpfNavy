@@ -1,5 +1,6 @@
 ﻿using ClassLibrary;
 using FontAwesome.Sharp;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -68,47 +69,38 @@ namespace WpfNavy.ViewModels
         }
         private void Close(object commandParameter) => (commandParameter as MainWindow).Close();
         private void ResetBank(object commandParameter) => ResetBank();
-        private void DepSelected(object commandParameter)
-        {
-            if ((commandParameter as ListView).SelectedItem is Dep dep && dep != null)
-            {
-                Clients = dep.Clients;
-                if (MessageBox.Show("Удалить отдел?", "Удаление отдела " + dep.Name, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    Bank.Deps.Remove(dep);
-                    dep = null;
-                }
-                Dep = dep;
-            }
-            else
-                Clients = null;
-        }
-        private void ClientSelected(object commandParameter)
-        {
-            if ((commandParameter as ListView).SelectedItem is Client client && client != null)
-            {
-                Accounts = client.Accounts;
-                if (MessageBox.Show("Удалить клиента?", "Удаление клиента " + client.Name, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    Dep.Clients.Remove(client);
-                    client = null;
-                }
-                Client = client;
-            }
-            else
-                Accounts = null;
-        }
+        private void DepSelected(object commandParameter) =>
+            Clients = (commandParameter as ListView).SelectedItem is Dep dep ? (Dep = dep).Clients : null;
+        private void ClientSelected(object commandParameter) =>
+            Accounts = (commandParameter as ListView).SelectedItem is Client client ? (Client = client).Accounts : null;
+        private void AccSelected(object commandParameter) =>
+            Account = ((commandParameter as ListView).SelectedItem is Account account) ? account : null;
         private void AddDep(object commandParameter) => Bank.Deps.Add(new Dep());
         private void AddClient(object commandParameter) => Dep.Clients.Add(new Client());
         private void AddAccount(object commandParameter) => Client.Accounts.Add(new Account());
-        private void RemoveDep(object commandParameter) => Bank.Deps.Remove(Dep);
-        private void RemoveClient(object commandParameter) => Dep.Clients.Remove(Client);
-        private void RemoveAcc(object commandParameter) => Client.Accounts.Remove(Account);
-        private void AccSelected(object commandParameter)
+        private void RemoveDep(object commandParameter)
         {
-            Account = ((commandParameter as MainWindow).accListView.SelectedItem is Account account) ? account : null;
+            if (Dep != null && MessageBox.Show("Удалить отдел?", "Удаление отдела " + Dep.Name, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                Bank.Deps.Remove(Dep);
+                Dep = null;
+            }
+        }
+        private void RemoveClient(object commandParameter)
+        {
+            if (Client != null && MessageBox.Show("Удалить клиента?", "Удаление клиента " + Client.Name, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                Dep.Clients.Remove(Client);
+                Client = null;
+            }
+        }
+        private void RemoveAcc(object commandParameter)
+        {
             if (Account != null && MessageBox.Show("Удалить счет?", "Удаление счета " + Account.Number, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
                 Client.Accounts.Remove(Account);
+                Account = null;
+            }
         }
         #endregion
     }
