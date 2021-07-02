@@ -121,7 +121,11 @@
                 </ListView.ToolTip>
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource ResourceKey=BlackNavy}">
-                        <GridViewColumn x:Name="depNameColumn" Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn x:Name="depNameColumn" DisplayMemberBinding="{Binding Name}">
+                            <GridViewColumnHeader Command="{Binding SortByNameCommand}" CommandParameter="{Binding ElementName=depListView}">
+                                Name
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -153,8 +157,13 @@
                     <ToolTip Style="{StaticResource ResourceKey=BlackNavy}" Content="Клиенты" />
                 </ListView.ToolTip>
                 <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{StaticResource ResourceKey=BlackNavy}">
-                        <GridViewColumn x:Name="ColClientName"  Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                    <GridView ColumnHeaderContainerStyle="{StaticResource gridViewHeaderStyle}">
+                        <GridViewColumn x:Name="ColClientName" DisplayMemberBinding="{Binding Name}">
+                            <GridViewColumnHeader IsEnabled="{Binding ClientSortEnabled}" Command="{Binding SortByNameCommand}" 
+                                                  CommandParameter="{Binding ElementName=clientListView}">
+                                Name
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -188,10 +197,27 @@
                     <ToolTip Style="{StaticResource ResourceKey=BlackNavy}" Content="Счета"/>
                 </ListView.ToolTip>
                 <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{StaticResource ResourceKey=BlackNavy}">
-                        <GridViewColumn Header="Number" DisplayMemberBinding="{Binding Number}"/>
-                        <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size}"/>
-                        <GridViewColumn Header="Rate" DisplayMemberBinding="{Binding Rate}"/>
+                    <GridView ColumnHeaderContainerStyle="{StaticResource gridViewHeaderStyle}">
+                        <GridViewColumn DisplayMemberBinding="{Binding Number}">
+                            <GridViewColumnHeader Command="{Binding AccSortByNmbCommand}" CommandParameter="{Binding ElementName=accListView}" IsEnabled="{Binding AccSortEnabled}">
+                                Number
+                                <!--<GridViewColumnHeader.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Sort By Number" Command="{Binding AccSortByNmbCommand}" CommandParameter="{Binding ElementName=accListView}"/>
+                                    </ContextMenu>
+                                </GridViewColumnHeader.ContextMenu>-->
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Size}">
+                            <GridViewColumnHeader Command="{Binding AccSortBySizeCommand}" CommandParameter="{Binding ElementName=accListView}" IsEnabled="{Binding AccSortEnabled}">
+                                Size
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Rate}">
+                            <GridViewColumnHeader Command="{Binding AccSortByRateCommand}" CommandParameter="{Binding ElementName=accListView}" IsEnabled="{Binding AccSortEnabled}">
+                                Rate
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
                         <GridViewColumn Header="Cap" DisplayMemberBinding="{Binding Cap}"/>
                     </GridView>
                 </ListView.View>

@@ -58,24 +58,24 @@ namespace WpfNavy.ViewModels
         public bool RemoveDepEnabled { get => removeDepEnabled; private set { removeDepEnabled = value; RaisePropertyChanged(nameof(RemoveDepEnabled)); } }
         public bool ClientSortEnabled { get => clientSortEnabled; private set { clientSortEnabled = value; RaisePropertyChanged(nameof(ClientSortEnabled)); } }
         public bool AccSortEnabled { get => accSortEnabled; private set { accSortEnabled = value; RaisePropertyChanged(nameof(AccSortEnabled)); } }
-        public ICommand DragCommand => dragCommand ?? (dragCommand = new RelayCommand(Drag));
-        public ICommand MinimizeCommand => minimizeCommand ?? (minimizeCommand = new RelayCommand(Minimize));
+        public ICommand DragCommand => dragCommand ?? (dragCommand = new RelayCommand((e) => (e as MainWindow).DragMove()));
+        public ICommand MinimizeCommand => minimizeCommand ?? (minimizeCommand = new RelayCommand((e) => (e as MainWindow).WindowState = WindowState.Minimized));
         public ICommand MaximizeCommand => maximizeCommand ?? (maximizeCommand = new RelayCommand(Maximize));
-        public ICommand CloseCommand => closeCommand ?? (closeCommand = new RelayCommand(Close));
-        public ICommand ResetBankCommand => resetBankCommand ?? (resetBankCommand = new RelayCommand(ResetBank));
+        public ICommand CloseCommand => closeCommand ?? (closeCommand = new RelayCommand((e) => (e as MainWindow).Close()));
+        public ICommand ResetBankCommand => resetBankCommand ?? (resetBankCommand = new RelayCommand((e) => ResetBank()));
         public ICommand DepSelectedCommand => depSelectedCommand ?? (depSelectedCommand = new RelayCommand(DepSelected));
         public ICommand ClientSelectedCommand => clientSelectedCommand ?? (clientSelectedCommand = new RelayCommand(ClientSelected));
-        public ICommand AddDepCommand => addDepCommand ?? (addDepCommand = new RelayCommand(AddDep));
-        public ICommand AddClientCommand => addClientCommand ?? (addClientCommand = new RelayCommand(AddClient));
-        public ICommand AddAccountCommand => addAccountCommand ?? (addAccountCommand = new RelayCommand(AddAccount));
+        public ICommand AddDepCommand => addDepCommand ?? (addDepCommand = new RelayCommand((e) => Bank.Deps.Add(new Dep())));
+        public ICommand AddClientCommand => addClientCommand ?? (addClientCommand = new RelayCommand((e) => Dep.Clients.Add(new Client())));
+        public ICommand AddAccountCommand => addAccountCommand ?? (addAccountCommand = new RelayCommand((e) => Client.Accounts.Add(new Account())));
         public ICommand RemoveDepCommand => removeDepCommand ?? (removeDepCommand = new RelayCommand(RemoveDep));
         public ICommand RemoveClientCommand => removeClientCommand ?? (removeClientCommand = new RelayCommand(RemoveClient));
         public ICommand RemoveAccCommand => removeAccCommand ?? (removeAccCommand = new RelayCommand(RemoveAcc));
         public ICommand AccSelectedCommand => accSelectedCommand ?? (accSelectedCommand = new RelayCommand(AccSelected));
-        public ICommand SortByNameCommand => sortByNameCommand ?? (sortByNameCommand = new RelayCommand(SortByName));
-        public ICommand AccSortByNmbCommand => accSortByNmbCommand ?? (accSortByNmbCommand = new RelayCommand(AccSortByNmb));
-        public ICommand AccSortBySizeCommand => accSortBySizeCommand ?? (accSortBySizeCommand = new RelayCommand(AccSortBySize));
-        public ICommand AccSortByRateCommand => accSortByRateCommand ?? (accSortByRateCommand = new RelayCommand(AccSortByRate));
+        public ICommand SortByNameCommand => sortByNameCommand ?? (sortByNameCommand = new RelayCommand((e) => SortBy(e, "Name")));
+        public ICommand AccSortByNmbCommand => accSortByNmbCommand ?? (accSortByNmbCommand = new RelayCommand((e) => SortBy(e, "Number")));
+        public ICommand AccSortBySizeCommand => accSortBySizeCommand ?? (accSortBySizeCommand = new RelayCommand((e) => SortBy(e, "Size")));
+        public ICommand AccSortByRateCommand => accSortByRateCommand ?? (accSortByRateCommand = new RelayCommand((e) => SortBy(e, "Rate")));
         #endregion
         public MainViewModel() => ResetBank();
         private void ResetBank()
@@ -85,52 +85,48 @@ namespace WpfNavy.ViewModels
             ClientSortEnabled = AccSortEnabled = RemoveDepEnabled = RemoveClientEnabled = RemoveAccEnabled = false;
         }
         #region Handlers
-        private void Drag(object commandParameter) => (commandParameter as MainWindow).DragMove();
-        private void Minimize(object commandParameter) => (commandParameter as MainWindow).WindowState = WindowState.Minimized;
         private void Maximize(object commandParameter)
         {
             MainWindow window = commandParameter as MainWindow;
             window.WindowState = window.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             window.MaxIconBlock.Icon = window.WindowState == WindowState.Maximized ? IconChar.WindowRestore : IconChar.WindowMaximize;
         }
-        private void Close(object commandParameter) => (commandParameter as MainWindow).Close();
-        private void ResetBank(object commandParameter) => ResetBank();
         private void DepSelected(object commandParameter) =>
             ClientSortEnabled = RemoveDepEnabled = (Clients = (commandParameter as ListView).SelectedItem is Dep dep ? (Dep = dep).Clients : null) != null;
         private void ClientSelected(object commandParameter) =>
             AccSortEnabled = RemoveClientEnabled = (Accounts = (commandParameter as ListView).SelectedItem is Client client ? (Client = client).Accounts : null) != null;
         private void AccSelected(object commandParameter) =>
             RemoveAccEnabled = (Account = ((commandParameter as ListView).SelectedItem is Account account) ? account : null) != null;
-        private void AddDep(object commandParameter) => Bank.Deps.Add(new Dep());
-        private void AddClient(object commandParameter) => Dep.Clients.Add(new Client());
-        private void AddAccount(object commandParameter) => Client.Accounts.Add(new Account());
         private void RemoveDep(object commandParameter)
         {
             if (Dep != null && MessageBox.Show("Удалить отдел?", "Удаление отдела " + Dep.Name, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                Bank.Deps.Remove(Dep);
+                _ = Bank.Deps.Remove(Dep);
             }
         }
         private void RemoveClient(object commandParameter)
         {
-            //commandParameter = Mouse.DirectlyOver as FrameworkElement;
-            //if (commandParameter != null)
-            //    commandParameter = ((FrameworkElement)commandParameter).DataContext;
             if (Client != null && MessageBox.Show("Удалить клиента?", "Удаление клиента " + Client.Name, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                Dep.Clients.Remove(Client);
+                _ = Dep.Clients.Remove(Client);
             }
         }
         private void RemoveAcc(object commandParameter)
         {
             if (Account != null && MessageBox.Show("Удалить счет?", "Удаление счета " + Account.Number, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                Client.Accounts.Remove(Account);
+                _ = Client.Accounts.Remove(Account);
             }
         }
         private void SortBy(object commandParameter, string PropName)
         {
             if (commandParameter == null) return;
+            //{
+            //    commandParameter = Mouse.DirectlyOver as FrameworkElement;
+            //    if (commandParameter != null)
+            //        commandParameter = ((FrameworkElement)commandParameter).DataContext;
+            //    else return;
+            //}
             ListView listView = commandParameter as ListView;
             // Меняем порядок сортировки на противоположный.
             curDepListSortDirection = (ListSortDirection)(((int)curDepListSortDirection + 1) % 2);
@@ -140,10 +136,6 @@ namespace WpfNavy.ViewModels
             listView.Items.SortDescriptions.Add(new SortDescription(PropName, curDepListSortDirection));
 
         }
-        private void SortByName(object commandParameter) => SortBy(commandParameter, "Name");
-        private void AccSortByNmb(object commandParameter) => SortBy(commandParameter, "Number");
-        private void AccSortBySize(object commandParameter) => SortBy(commandParameter, "Size");
-        private void AccSortByRate(object commandParameter) => SortBy(commandParameter, "Rate");
         #endregion
     }
 }
