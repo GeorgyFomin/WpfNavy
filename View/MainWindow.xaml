@@ -122,7 +122,8 @@
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource ResourceKey=BlackNavy}">
                         <GridViewColumn x:Name="depNameColumn" DisplayMemberBinding="{Binding Name}">
-                            <GridViewColumnHeader Command="{Binding SortByNameCommand}" CommandParameter="{Binding ElementName=depListView}">
+                            <GridViewColumnHeader Command="{Binding SortByNameCommand}" CommandParameter="{Binding ElementName=depListView}" 
+                                                  Template="{DynamicResource GridViewColumnHeaderControlTemplate1}">
                                 Name
                             </GridViewColumnHeader>
                         </GridViewColumn>
@@ -157,10 +158,10 @@
                     <ToolTip Style="{StaticResource ResourceKey=BlackNavy}" Content="Клиенты" />
                 </ListView.ToolTip>
                 <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{StaticResource gridViewHeaderStyle}">
+                    <GridView ColumnHeaderContainerStyle="{StaticResource ResourceKey=BlackNavy}">
                         <GridViewColumn x:Name="ColClientName" DisplayMemberBinding="{Binding Name}">
                             <GridViewColumnHeader IsEnabled="{Binding ClientSortEnabled}" Command="{Binding SortByNameCommand}" 
-                                                  CommandParameter="{Binding ElementName=clientListView}">
+                                                  CommandParameter="{Binding ElementName=clientListView}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}">
                                 Name
                             </GridViewColumnHeader>
                         </GridViewColumn>
@@ -197,9 +198,10 @@
                     <ToolTip Style="{StaticResource ResourceKey=BlackNavy}" Content="Счета"/>
                 </ListView.ToolTip>
                 <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{StaticResource gridViewHeaderStyle}">
+                    <GridView ColumnHeaderContainerStyle="{StaticResource ResourceKey=BlackNavy}">
                         <GridViewColumn DisplayMemberBinding="{Binding Number}">
-                            <GridViewColumnHeader Command="{Binding AccSortByNmbCommand}" CommandParameter="{Binding ElementName=accListView}" IsEnabled="{Binding AccSortEnabled}">
+                            <GridViewColumnHeader Command="{Binding AccSortByNmbCommand}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}"
+                                                  CommandParameter="{Binding ElementName=accListView}" IsEnabled="{Binding AccSortEnabled}">
                                 Number
                                 <!--<GridViewColumnHeader.ContextMenu>
                                     <ContextMenu>
@@ -209,16 +211,22 @@
                             </GridViewColumnHeader>
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding Size}">
-                            <GridViewColumnHeader Command="{Binding AccSortBySizeCommand}" CommandParameter="{Binding ElementName=accListView}" IsEnabled="{Binding AccSortEnabled}">
+                            <GridViewColumnHeader Command="{Binding AccSortBySizeCommand}" CommandParameter="{Binding ElementName=accListView}" 
+                                                  IsEnabled="{Binding AccSortEnabled}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}">
                                 Size
                             </GridViewColumnHeader>
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding Rate}">
-                            <GridViewColumnHeader Command="{Binding AccSortByRateCommand}" CommandParameter="{Binding ElementName=accListView}" IsEnabled="{Binding AccSortEnabled}">
+                            <GridViewColumnHeader Command="{Binding AccSortByRateCommand}" CommandParameter="{Binding ElementName=accListView}" 
+                                                  IsEnabled="{Binding AccSortEnabled}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}">
                                 Rate
                             </GridViewColumnHeader>
                         </GridViewColumn>
-                        <GridViewColumn Header="Cap" DisplayMemberBinding="{Binding Cap}"/>
+                        <GridViewColumn Width="40" DisplayMemberBinding="{Binding Cap}">
+                            <GridViewColumnHeader IsEnabled="False">
+                                Cap
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>

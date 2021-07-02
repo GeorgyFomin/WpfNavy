@@ -99,6 +99,13 @@ namespace WpfNavy.ViewModels
             RemoveAccEnabled = (Account = ((commandParameter as ListView).SelectedItem is Account account) ? account : null) != null;
         private void RemoveDep(object commandParameter)
         {
+            //if (commandParameter == null)
+            //{
+            //    commandParameter = ((Mouse.DirectlyOver as ScrollViewer).Content as ItemsPresenter);// FrameworkElement;
+            //    if (commandParameter != null)
+            //        commandParameter = ((FrameworkElement)commandParameter).DataContext;
+            //    else return;
+            //}
             if (Dep != null && MessageBox.Show("Удалить отдел?", "Удаление отдела " + Dep.Name, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 _ = Bank.Deps.Remove(Dep);
@@ -121,12 +128,6 @@ namespace WpfNavy.ViewModels
         private void SortBy(object commandParameter, string PropName)
         {
             if (commandParameter == null) return;
-            //{
-            //    commandParameter = Mouse.DirectlyOver as FrameworkElement;
-            //    if (commandParameter != null)
-            //        commandParameter = ((FrameworkElement)commandParameter).DataContext;
-            //    else return;
-            //}
             ListView listView = commandParameter as ListView;
             // Меняем порядок сортировки на противоположный.
             curDepListSortDirection = (ListSortDirection)(((int)curDepListSortDirection + 1) % 2);
