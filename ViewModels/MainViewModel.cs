@@ -82,12 +82,12 @@ namespace WpfNavy.ViewModels
         public ICommand AddDepCommand => addDepCommand ?? (addDepCommand = new RelayCommand((e) =>
         {
             Bank.Deps.Add(new Dep());
-            AdjustColumnWidth((e as MainWindow).depNameColumn);
+            AdjustColumnWidth(e as GridViewColumn);
         }));
         public ICommand AddClientCommand => addClientCommand ?? (addClientCommand = new RelayCommand((e) =>
         {
             Dep.Clients.Add(new Client());
-            AdjustColumnWidth((e as MainWindow).clientNameСolumn);
+            AdjustColumnWidth(e as GridViewColumn);
         }));
         public ICommand AddAccountCommand => addAccountCommand ?? (addAccountCommand = new RelayCommand((e) => Client.Accounts.Add(new Account())));
         public ICommand RemoveDepCommand => removeDepCommand ?? (removeDepCommand = new RelayCommand(RemoveDep));

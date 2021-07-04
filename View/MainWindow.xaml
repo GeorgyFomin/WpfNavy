@@ -127,7 +127,7 @@
                             </GridViewColumnHeader>
                         </GridViewColumn>
                         <GridViewColumn  DisplayMemberBinding="{Binding VoidList}">
-                            <GridViewColumnHeader Command="{Binding AddDepCommand}" CommandParameter="{Binding ElementName=mainWnd}">
+                            <GridViewColumnHeader Command="{Binding AddDepCommand}" CommandParameter="{Binding ElementName=depNameColumn}">
                                 Add Dep
                             </GridViewColumnHeader>
                         </GridViewColumn>
@@ -170,7 +170,8 @@
                             </GridViewColumnHeader>
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding VoidList}">
-                            <GridViewColumnHeader Command="{Binding AddClientCommand}" CommandParameter="{Binding ElementName=mainWnd}" Width="68" IsEnabled="{Binding ClientSortEnabled}">
+                            <GridViewColumnHeader Command="{Binding AddClientCommand}" CommandParameter="{Binding ElementName=clientNameСolumn}" Width="68" 
+                                                  IsEnabled="{Binding ClientSortEnabled}">
                                 Add Client
                             </GridViewColumnHeader>
                         </GridViewColumn>
