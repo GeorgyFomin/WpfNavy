@@ -75,8 +75,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width=".25*" x:Name="col0"/>
-                <ColumnDefinition Width=".5*" x:Name="col1"/>
+                <ColumnDefinition Width=".3*" x:Name="col0"/>
+                <ColumnDefinition Width=".4*" x:Name="col1"/>
                 <ColumnDefinition Width="*" x:Name="col2"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Content="Sort Departments" Style="{StaticResource headerBtn}" 
@@ -95,7 +95,6 @@
             <ListView x:Name="depListView" Grid.Row="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Bank.Deps}">
                 <ListView.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Add" Command="{Binding AddDepCommand}"/>
                         <MenuItem Header="Remove" Command="{Binding RemoveDepCommand}" IsEnabled="{Binding RemoveDepEnabled}" />
                     </ContextMenu>
                 </ListView.ContextMenu>
@@ -127,13 +126,17 @@
                                 Name
                             </GridViewColumnHeader>
                         </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding VoidList}">
+                            <GridViewColumnHeader Command="{Binding AddDepCommand}" CommandParameter="{Binding ElementName=depListView}">
+                                Add Dep
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
             <ListView x:Name="clientListView" Grid.Row="1" Grid.Column="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Clients}">
                 <ListView.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Add" Command="{Binding AddClientCommand}"/>
                         <MenuItem Header="Remove" Command="{Binding RemoveClientCommand}" IsEnabled="{Binding RemoveClientEnabled}" />
                     </ContextMenu>
                 </ListView.ContextMenu>
@@ -161,8 +164,14 @@
                     <GridView ColumnHeaderContainerStyle="{StaticResource ResourceKey=BlackNavy}">
                         <GridViewColumn x:Name="ColClientName" DisplayMemberBinding="{Binding Name}">
                             <GridViewColumnHeader IsEnabled="{Binding ClientSortEnabled}" Command="{Binding SortByNameCommand}" 
-                                                  CommandParameter="{Binding ElementName=clientListView}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}">
+                                                  CommandParameter="{Binding ElementName=clientListView}" 
+                                                  Template="{DynamicResource GridViewColumnHeaderControlTemplate1}">
                                 Name
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding VoidList}">
+                            <GridViewColumnHeader Command="{Binding AddClientCommand}" CommandParameter="{Binding ElementName=clientListView}" Width="68" IsEnabled="{Binding ClientSortEnabled}">
+                                Add Client
                             </GridViewColumnHeader>
                         </GridViewColumn>
                     </GridView>
@@ -176,7 +185,6 @@
                 </i:Interaction.Triggers>
                 <ListView.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Add" Command="{Binding AddAccountCommand}"/>
                         <MenuItem Header="Remove" Command="{Binding RemoveAccCommand}" IsEnabled="{Binding RemoveAccEnabled}"/>
                     </ContextMenu>
                 </ListView.ContextMenu>
@@ -203,11 +211,6 @@
                             <GridViewColumnHeader Command="{Binding AccSortByNmbCommand}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}"
                                                   CommandParameter="{Binding ElementName=accListView}" IsEnabled="{Binding AccSortEnabled}">
                                 Number
-                                <!--<GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Sort By Number" Command="{Binding AccSortByNmbCommand}" CommandParameter="{Binding ElementName=accListView}"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>-->
                             </GridViewColumnHeader>
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding Size}">
@@ -225,6 +228,11 @@
                         <GridViewColumn Width="40" DisplayMemberBinding="{Binding Cap}">
                             <GridViewColumnHeader IsEnabled="False">
                                 Cap
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding VoidList}">
+                            <GridViewColumnHeader Command="{Binding AddAccountCommand}" CommandParameter="{Binding ElementName=accListView}" Width="80" IsEnabled="{Binding AccSortEnabled}">
+                                Add Account
                             </GridViewColumnHeader>
                         </GridViewColumn>
                     </GridView>

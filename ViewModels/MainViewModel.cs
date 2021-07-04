@@ -65,7 +65,11 @@ namespace WpfNavy.ViewModels
         public ICommand ResetBankCommand => resetBankCommand ?? (resetBankCommand = new RelayCommand((e) => ResetBank()));
         public ICommand DepSelectedCommand => depSelectedCommand ?? (depSelectedCommand = new RelayCommand(DepSelected));
         public ICommand ClientSelectedCommand => clientSelectedCommand ?? (clientSelectedCommand = new RelayCommand(ClientSelected));
-        public ICommand AddDepCommand => addDepCommand ?? (addDepCommand = new RelayCommand((e) => Bank.Deps.Add(new Dep())));
+        public ICommand AddDepCommand => addDepCommand ?? (addDepCommand = new RelayCommand((e) =>
+        {
+            Bank.Deps.Add(new Dep());
+            (e as ListView).InvalidateVisual();
+        }));
         public ICommand AddClientCommand => addClientCommand ?? (addClientCommand = new RelayCommand((e) => Dep.Clients.Add(new Client())));
         public ICommand AddAccountCommand => addAccountCommand ?? (addAccountCommand = new RelayCommand((e) => Client.Accounts.Add(new Account())));
         public ICommand RemoveDepCommand => removeDepCommand ?? (removeDepCommand = new RelayCommand(RemoveDep));

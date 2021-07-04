@@ -18,7 +18,7 @@ namespace ClassLibrary
         /// <summary>
         /// Возвращает уникальный идентификатор.
         /// </summary>
-        public Guid ID { get => id; }
+        public Guid ID => id;
         /// <summary>
         /// Инициализирует объект.
         /// </summary>
