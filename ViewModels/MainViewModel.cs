@@ -58,24 +58,42 @@ namespace WpfNavy.ViewModels
         public bool RemoveDepEnabled { get => removeDepEnabled; private set { removeDepEnabled = value; RaisePropertyChanged(nameof(RemoveDepEnabled)); } }
         public bool ClientSortEnabled { get => clientSortEnabled; private set { clientSortEnabled = value; RaisePropertyChanged(nameof(ClientSortEnabled)); } }
         public bool AccSortEnabled { get => accSortEnabled; private set { accSortEnabled = value; RaisePropertyChanged(nameof(AccSortEnabled)); } }
-        public ICommand DragCommand => dragCommand ?? (dragCommand = new RelayCommand((e) => (e as MainWindow).DragMove()));
+        public ICommand DragCommand => dragCommand ?? (dragCommand = new RelayCommand(action: (e) => (e as MainWindow).DragMove()));
         public ICommand MinimizeCommand => minimizeCommand ?? (minimizeCommand = new RelayCommand((e) => (e as MainWindow).WindowState = WindowState.Minimized));
-        public ICommand MaximizeCommand => maximizeCommand ?? (maximizeCommand = new RelayCommand(Maximize));
+        public ICommand MaximizeCommand => maximizeCommand ?? (maximizeCommand = new RelayCommand(action: (e) =>
+        {
+            MainWindow window = e as MainWindow;
+            window.WindowState = window.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+            window.MaxIconBlock.Icon = window.WindowState == WindowState.Maximized ? IconChar.WindowRestore : IconChar.WindowMaximize;
+        }));
         public ICommand CloseCommand => closeCommand ?? (closeCommand = new RelayCommand((e) => (e as MainWindow).Close()));
         public ICommand ResetBankCommand => resetBankCommand ?? (resetBankCommand = new RelayCommand((e) => ResetBank()));
-        public ICommand DepSelectedCommand => depSelectedCommand ?? (depSelectedCommand = new RelayCommand(DepSelected));
-        public ICommand ClientSelectedCommand => clientSelectedCommand ?? (clientSelectedCommand = new RelayCommand(ClientSelected));
+        public ICommand DepSelectedCommand => depSelectedCommand ?? (depSelectedCommand = new RelayCommand(
+            action: (e) => ClientSortEnabled = RemoveDepEnabled = (Clients = (e as ListView).SelectedItem is Dep dep ? (Dep = dep).Clients : null) != null));
+        public ICommand ClientSelectedCommand => clientSelectedCommand ?? (clientSelectedCommand = new RelayCommand(
+            action: (e) => AccSortEnabled = RemoveClientEnabled = (Accounts = (e as ListView).SelectedItem is Client client ? (Client = client).Accounts : null) != null));
+        public ICommand AccSelectedCommand => accSelectedCommand ?? (accSelectedCommand = new RelayCommand(
+            action: (e) => RemoveAccEnabled = (Account = ((e as ListView).SelectedItem is Account account) ? account : null) != null));
         public ICommand AddDepCommand => addDepCommand ?? (addDepCommand = new RelayCommand((e) =>
         {
             Bank.Deps.Add(new Dep());
-            (e as ListView).InvalidateVisual();
+            GridViewColumn column = (e as MainWindow).depNameColumn;
+            column.Width = double.IsNaN(column.Width) ? column.ActualWidth : double.NaN;
+            // Не хочет работать.
+            //(e as MainWindow).depListView.UpdateLayout();
         }));
-        public ICommand AddClientCommand => addClientCommand ?? (addClientCommand = new RelayCommand((e) => Dep.Clients.Add(new Client())));
+        public ICommand AddClientCommand => addClientCommand ?? (addClientCommand = new RelayCommand((e) =>
+        {
+            Dep.Clients.Add(new Client());
+            GridViewColumn column = (e as MainWindow).clientNameСolumn;
+            column.Width = double.IsNaN(column.Width) ? column.ActualWidth : double.NaN;
+            // Не хочет работать.
+            (e as MainWindow).clientListView.UpdateLayout();
+        }));
         public ICommand AddAccountCommand => addAccountCommand ?? (addAccountCommand = new RelayCommand((e) => Client.Accounts.Add(new Account())));
         public ICommand RemoveDepCommand => removeDepCommand ?? (removeDepCommand = new RelayCommand(RemoveDep));
         public ICommand RemoveClientCommand => removeClientCommand ?? (removeClientCommand = new RelayCommand(RemoveClient));
         public ICommand RemoveAccCommand => removeAccCommand ?? (removeAccCommand = new RelayCommand(RemoveAcc));
-        public ICommand AccSelectedCommand => accSelectedCommand ?? (accSelectedCommand = new RelayCommand(AccSelected));
         public ICommand SortByNameCommand => sortByNameCommand ?? (sortByNameCommand = new RelayCommand((e) => SortBy(e, "Name")));
         public ICommand AccSortByNmbCommand => accSortByNmbCommand ?? (accSortByNmbCommand = new RelayCommand((e) => SortBy(e, "Number")));
         public ICommand AccSortBySizeCommand => accSortBySizeCommand ?? (accSortBySizeCommand = new RelayCommand((e) => SortBy(e, "Size")));
@@ -89,18 +107,6 @@ namespace WpfNavy.ViewModels
             ClientSortEnabled = AccSortEnabled = RemoveDepEnabled = RemoveClientEnabled = RemoveAccEnabled = false;
         }
         #region Handlers
-        private void Maximize(object commandParameter)
-        {
-            MainWindow window = commandParameter as MainWindow;
-            window.WindowState = window.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-            window.MaxIconBlock.Icon = window.WindowState == WindowState.Maximized ? IconChar.WindowRestore : IconChar.WindowMaximize;
-        }
-        private void DepSelected(object commandParameter) =>
-            ClientSortEnabled = RemoveDepEnabled = (Clients = (commandParameter as ListView).SelectedItem is Dep dep ? (Dep = dep).Clients : null) != null;
-        private void ClientSelected(object commandParameter) =>
-            AccSortEnabled = RemoveClientEnabled = (Accounts = (commandParameter as ListView).SelectedItem is Client client ? (Client = client).Accounts : null) != null;
-        private void AccSelected(object commandParameter) =>
-            RemoveAccEnabled = (Account = ((commandParameter as ListView).SelectedItem is Account account) ? account : null) != null;
         private void RemoveDep(object commandParameter)
         {
             //if (commandParameter == null)
