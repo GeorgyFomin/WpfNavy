@@ -69,26 +69,25 @@ namespace WpfNavy.ViewModels
         public ICommand CloseCommand => closeCommand ?? (closeCommand = new RelayCommand((e) => (e as MainWindow).Close()));
         public ICommand ResetBankCommand => resetBankCommand ?? (resetBankCommand = new RelayCommand((e) => ResetBank()));
         public ICommand DepSelectedCommand => depSelectedCommand ?? (depSelectedCommand = new RelayCommand(
-            action: (e) => ClientSortEnabled = RemoveDepEnabled = (Clients = (e as ListView).SelectedItem is Dep dep ? (Dep = dep).Clients : null) != null));
+            (e) => ClientSortEnabled = RemoveDepEnabled = (Clients = (e as ListView).SelectedItem is Dep dep ? (Dep = dep).Clients : null) != null));
         public ICommand ClientSelectedCommand => clientSelectedCommand ?? (clientSelectedCommand = new RelayCommand(
-            action: (e) => AccSortEnabled = RemoveClientEnabled = (Accounts = (e as ListView).SelectedItem is Client client ? (Client = client).Accounts : null) != null));
+            (e) => AccSortEnabled = RemoveClientEnabled = (Accounts = (e as ListView).SelectedItem is Client client ? (Client = client).Accounts : null) != null));
         public ICommand AccSelectedCommand => accSelectedCommand ?? (accSelectedCommand = new RelayCommand(
-            action: (e) => RemoveAccEnabled = (Account = ((e as ListView).SelectedItem is Account account) ? account : null) != null));
+            (e) => RemoveAccEnabled = (Account = ((e as ListView).SelectedItem is Account account) ? account : null) != null));
+        private void AdjustColumnWidth(GridViewColumn column)
+        {
+            for (int i = 0; i < 2; i++)
+                column.Width = double.IsNaN(column.Width) ? column.ActualWidth : double.NaN;
+        }
         public ICommand AddDepCommand => addDepCommand ?? (addDepCommand = new RelayCommand((e) =>
         {
             Bank.Deps.Add(new Dep());
-            GridViewColumn column = (e as MainWindow).depNameColumn;
-            column.Width = double.IsNaN(column.Width) ? column.ActualWidth : double.NaN;
-            // Не хочет работать.
-            //(e as MainWindow).depListView.UpdateLayout();
+            AdjustColumnWidth((e as MainWindow).depNameColumn);
         }));
         public ICommand AddClientCommand => addClientCommand ?? (addClientCommand = new RelayCommand((e) =>
         {
             Dep.Clients.Add(new Client());
-            GridViewColumn column = (e as MainWindow).clientNameСolumn;
-            column.Width = double.IsNaN(column.Width) ? column.ActualWidth : double.NaN;
-            // Не хочет работать.
-            (e as MainWindow).clientListView.UpdateLayout();
+            AdjustColumnWidth((e as MainWindow).clientNameСolumn);
         }));
         public ICommand AddAccountCommand => addAccountCommand ?? (addAccountCommand = new RelayCommand((e) => Client.Accounts.Add(new Account())));
         public ICommand RemoveDepCommand => removeDepCommand ?? (removeDepCommand = new RelayCommand(RemoveDep));

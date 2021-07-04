@@ -119,8 +119,8 @@
                     <ToolTip  Style="{StaticResource ResourceKey=BlackNavy}" Content="Отделы"/>
                 </ListView.ToolTip>
                 <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{StaticResource ResourceKey=BlackNavy}">
-                        <GridViewColumn x:Name="depNameColumn" DisplayMemberBinding="{Binding Name}">
+                    <GridView x:Name="depGridView" ColumnHeaderContainerStyle="{StaticResource ResourceKey=BlackNavy}">
+                        <GridViewColumn x:Name="depNameColumn" DisplayMemberBinding="{Binding Name}" >
                             <GridViewColumnHeader Command="{Binding SortByNameCommand}" CommandParameter="{Binding ElementName=depListView}" 
                                                   Template="{DynamicResource GridViewColumnHeaderControlTemplate1}">
                                 Name
