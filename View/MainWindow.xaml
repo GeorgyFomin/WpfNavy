@@ -18,7 +18,7 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "Bank "/>
-            <TextBlock x:Name="bankName" Foreground="LightGreen" VerticalAlignment="Center" Text= "{Binding Bank.Name}" >
+            <TextBlock x:Name="bankName" Foreground="Yellow" VerticalAlignment="Center" Text= "{Binding Bank.Name}" >
                 <TextBlock.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Edit">
@@ -29,6 +29,12 @@
                     </ContextMenu>
                 </TextBlock.ContextMenu>
             </TextBlock>
+            <!--<TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Dep: " />
+            <TextBox x:Name="topDepNameBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center" Text= "{Binding Dep.Name}"
+                    LostFocus="TextBoxEditNameHandler" KeyDown="TextBoxEditNameHandler" />
+            <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Client: " IsEnabled="{Binding ClientSortEnabled}"/>
+            <TextBox x:Name="topClientNameBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center" Text= "{Binding Client.Name}"
+                    LostFocus="TextBoxEditNameHandler" KeyDown="TextBoxEditNameHandler" />-->
             <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" >
                 <Button x:Name="CloseButton" Background="Transparent" BorderBrush="Transparent" Style="{StaticResource ButtonStyle1}">
                     <i:Interaction.Triggers>
