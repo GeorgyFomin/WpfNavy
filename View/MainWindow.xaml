@@ -101,7 +101,7 @@
                 <ListView.Resources>
                     <ContextMenu x:Key="ItemContextMenu">
                         <MenuItem Header="Edit">
-                            <TextBox Text="{Binding Name}"/>
+                            <TextBox x:Name="depNameBox" Text="{Binding Name}" LostFocus="TextBoxEditNameHandler" KeyDown="TextBoxEditNameHandler"/>
                         </MenuItem>
                     </ContextMenu>
                 </ListView.Resources>
@@ -141,9 +141,9 @@
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.Resources>
-                    <ContextMenu x:Key="ItemContextMenu">
+                    <ContextMenu x:Name="clientMenu" x:Key="ItemContextMenu">
                         <MenuItem Header="Edit">
-                            <TextBox Text="{Binding Name}"/>
+                            <TextBox x:Name="clientNameBox" Text="{Binding Name}" LostFocus="TextBoxEditNameHandler" KeyDown="TextBoxEditNameHandler"/>
                         </MenuItem>
                     </ContextMenu>
                 </ListView.Resources>
