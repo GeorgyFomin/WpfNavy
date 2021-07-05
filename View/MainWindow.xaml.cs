@@ -23,7 +23,10 @@ namespace WpfNavy
         private void TextBoxEditNameHandler(object sender, RoutedEventArgs e)
         {
             if ((e is KeyEventArgs arg && arg.Key == Key.Enter) || !(e is KeyEventArgs))
-                AdjustColumnWidth((sender as TextBox).Name == "clientNameBox" ? clientNameСolumn : depNameColumn);
+            {
+                string name = (sender as TextBox).Name;
+                AdjustColumnWidth(name == "clientNameBox" || name == "topClientNameBox" ? clientNameСolumn : depNameColumn);
+            }
         }
     }
 }

@@ -10,73 +10,54 @@
         d:DataContext="{d:DesignInstance Type={x:Type viewmodels:MainViewModel}}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" WindowStyle="None" ResizeMode="NoResize" Style="{StaticResource ResourceKey=BlackNavy}">
-    <DockPanel Background="Transparent" >
-        <DockPanel x:Name="topPanel" DockPanel.Dock="Top" Height="20" >
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Height="20" Background="Transparent" Orientation="Horizontal" FlowDirection="RightToLeft">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeftButtonDown">
                     <i:InvokeCommandAction Command="{Binding DragCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "Bank "/>
-            <TextBlock x:Name="bankName" Foreground="Yellow" VerticalAlignment="Center" Text= "{Binding Bank.Name}" >
-                <TextBlock.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Edit">
-                            <TextBox Text="{Binding Bank.Name}">
-                                <TextBox.ToolTip>Имя банка</TextBox.ToolTip>
-                            </TextBox>
-                        </MenuItem>
-                    </ContextMenu>
-                </TextBlock.ContextMenu>
-            </TextBlock>
-            <!--<TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Dep: " />
-            <TextBox x:Name="topDepNameBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center" Text= "{Binding Dep.Name}"
-                    LostFocus="TextBoxEditNameHandler" KeyDown="TextBoxEditNameHandler" />
-            <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Client: " IsEnabled="{Binding ClientSortEnabled}"/>
-            <TextBox x:Name="topClientNameBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center" Text= "{Binding Client.Name}"
-                    LostFocus="TextBoxEditNameHandler" KeyDown="TextBoxEditNameHandler" />-->
-            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" >
-                <Button x:Name="CloseButton" Background="Transparent" BorderBrush="Transparent" Style="{StaticResource ButtonStyle1}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <StackPanel>
-                        <fa:IconBlock Width="20" Padding="0 3 0 0" Icon="WindowClose" Foreground="{StaticResource mainBtnColor}"/>
-                    </StackPanel>
-                </Button>
-                <Button x:Name="Maximize" Background="Transparent" BorderBrush="Transparent">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction Command="{Binding MaximizeCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <StackPanel>
-                        <fa:IconBlock x:Name="MaxIconBlock" Width="20" Padding="0 3 0 0" Icon="WindowMaximize" Foreground="{StaticResource mainBtnColor}"/>
-                    </StackPanel>
-                </Button>
-                <Button x:Name="Minimize" Background="Transparent" BorderBrush="Transparent">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction Command="{Binding MinimizeCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <StackPanel>
-                        <fa:IconBlock Width="20" Padding="0 3 0 0" Icon="WindowMinimize" Foreground="{StaticResource mainBtnColor}"/>
-                    </StackPanel>
-                </Button>
-                <Button Foreground="{StaticResource mainBtnColor}" Background="Transparent" BorderBrush="Transparent" Content="Random Bank">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction Command="{Binding ResetBankCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
-            </StackPanel>
-        </DockPanel>
+            <Button x:Name="CloseButton" Background="Transparent" BorderBrush="Transparent" Style="{StaticResource ButtonStyle1}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <StackPanel>
+                    <fa:IconBlock Width="20" Padding="0 3 0 0" Icon="WindowClose" Foreground="{StaticResource mainBtnColor}"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="Maximize" Background="Transparent" BorderBrush="Transparent">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding MaximizeCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <StackPanel>
+                    <fa:IconBlock x:Name="MaxIconBlock" Width="20" Padding="0 3 0 0" Icon="WindowMaximize" Foreground="{StaticResource mainBtnColor}"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="Minimize" Background="Transparent" BorderBrush="Transparent">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding MinimizeCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <StackPanel>
+                    <fa:IconBlock Width="20" Padding="0 3 0 0" Icon="WindowMinimize" Foreground="{StaticResource mainBtnColor}"/>
+                </StackPanel>
+            </Button>
+            <Button Foreground="{StaticResource mainBtnColor}" Background="Transparent" BorderBrush="Transparent" Content="Random Bank">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding ResetBankCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </StackPanel>
         <Grid Background="Transparent">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -85,25 +66,40 @@
                 <ColumnDefinition Width=".4*" x:Name="col1"/>
                 <ColumnDefinition Width="*" x:Name="col2"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Sort Departments" Style="{StaticResource headerBtn}" 
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="3">
+                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "Bank "/>
+                <TextBox x:Name="bankNameBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center"
+                     Text= "{Binding Bank.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Dep: " />
+                <TextBox x:Name="topDepNameBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center" 
+                     Text= "{Binding Dep.Name, UpdateSourceTrigger=PropertyChanged}" LostFocus="TextBoxEditNameHandler" KeyDown="TextBoxEditNameHandler" />
+                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Client: " />
+                <TextBox x:Name="topClientNameBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center" 
+                     Text= "{Binding Client.Name, UpdateSourceTrigger=PropertyChanged}" LostFocus="TextBoxEditNameHandler" KeyDown="TextBoxEditNameHandler" />
+                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Account: Size " />
+                <TextBox x:Name="accNameBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center" 
+                     Text= "{Binding Account.Size, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "; Rate " />
+                <TextBox x:Name="accRateBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center" 
+                     Text= "{Binding Account.Rate, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "; Cap " />
+                <CheckBox VerticalAlignment="Center" IsChecked= "{Binding Account.Cap, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <Button Grid.Column="0" Grid.Row="1" Content="Sort Departments" Style="{StaticResource headerBtn}" 
                     Command="{Binding SortByNameCommand}" CommandParameter="{Binding ElementName=depListView}">
             </Button>
-            <Button Grid.Column="1" Content="Sort Clients" Style="{StaticResource headerBtn}" IsEnabled="{Binding ClientSortEnabled}"
+            <Button Grid.Column="1" Grid.Row="1" Content="Sort Clients" Style="{StaticResource headerBtn}" IsEnabled="{Binding ClientSortEnabled}"
                     Command="{Binding SortByNameCommand}" CommandParameter="{Binding ElementName=clientListView}">
             </Button>
-            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" IsEnabled="{Binding AccSortEnabled}">
-                <TextBlock Text="Sort Accounts By " Foreground="LightBlue"  Style="{StaticResource headerText}"/>
+            <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" IsEnabled="{Binding AccSortEnabled}">
+                <TextBlock Text="Sort Accounts by " Foreground="LightBlue"  Style="{StaticResource headerText}"/>
                 <Button Content="Number" Style="{StaticResource headerBtn}" 
                         Command="{Binding AccSortByNmbCommand}" CommandParameter="{Binding ElementName=accListView}"/>
                 <Button Content="Size" Style="{StaticResource headerBtn}" Command="{Binding AccSortBySizeCommand}" CommandParameter="{Binding ElementName=accListView}"/>
                 <Button Content="Rate" Style="{StaticResource headerBtn}" Command="{Binding AccSortByRateCommand}" CommandParameter="{Binding ElementName=accListView}"/>
             </StackPanel>
-            <ListView x:Name="depListView" Grid.Row="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Bank.Deps}">
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Remove" Command="{Binding RemoveDepCommand}" IsEnabled="{Binding RemoveDepEnabled}"/>
-                    </ContextMenu>
-                </ListView.ContextMenu>
+            <ListView x:Name="depListView" Grid.Row="2" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Bank.Deps}">
+                <!--ItemContainerStyle="{StaticResource ListViewItemStyle1}">-->
                 <ListView.Resources>
                     <ContextMenu x:Key="ItemContextMenu">
                         <MenuItem Header="Edit">
@@ -116,6 +112,11 @@
                         <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
                     </Style>
                 </ListView.ItemContainerStyle>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove" Command="{Binding RemoveDepCommand}" IsEnabled="{Binding RemoveDepEnabled}"/>
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding DepSelectedCommand}" CommandParameter="{Binding ElementName=depListView}"/>
@@ -140,12 +141,8 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <ListView x:Name="clientListView" Grid.Row="1" Grid.Column="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Clients}">
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Remove" Command="{Binding RemoveClientCommand}" IsEnabled="{Binding RemoveClientEnabled}" />
-                    </ContextMenu>
-                </ListView.ContextMenu>
+            <ListView x:Name="clientListView" Grid.Row="2" Grid.Column="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Clients}">
+                <!--ItemContainerStyle="{StaticResource ListViewItemStyle1}">-->
                 <ListView.Resources>
                     <ContextMenu x:Name="clientMenu" x:Key="ItemContextMenu">
                         <MenuItem Header="Edit">
@@ -158,6 +155,11 @@
                         <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
                     </Style>
                 </ListView.ItemContainerStyle>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove" Command="{Binding RemoveClientCommand}" IsEnabled="{Binding RemoveClientEnabled}" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding ClientSelectedCommand}" CommandParameter="{Binding ElementName=clientListView}"/>
@@ -184,7 +186,8 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <ListView x:Name="accListView" Grid.Row="1" Grid.Column="2" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Accounts}" >
+            <ListView x:Name="accListView" Grid.Row="2" Grid.Column="2" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Accounts}">
+                <!--ItemContainerStyle="{StaticResource ListViewItemStyle1}">-->
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding AccSelectedCommand}" CommandParameter="{Binding ElementName=accListView}"/>
