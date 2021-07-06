@@ -1,9 +1,10 @@
 ﻿using ClassLibrary;
 using FontAwesome.Sharp;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +15,11 @@ namespace WpfNavy.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        private static void Log(string report)
+        {
+            using (TextWriter tw = File.AppendText("log.txt"))
+                tw.WriteLine(DateTime.Now.ToString() + ":" + report);
+        }
         #region Fields
         private Bank bank;
         private Dep dep;
@@ -45,6 +51,14 @@ namespace WpfNavy.ViewModels
         private ListSortDirection curDepListSortDirection;
         private bool clientSortEnabled;
         private bool accSortEnabled;
+        private RelayCommand fromSelectedCommand;
+        private bool fromIsSelected;
+        private RelayCommand toSelectedCommand;
+        private decimal transferAmount;
+        private RelayCommand doTransferCommand;
+        private bool transferEnabled;
+        private Account accountFrom;
+        private Account accountTo;
         #endregion
         #region Properties
         public Bank Bank { get => bank; set { bank = value; RaisePropertyChanged(nameof(Bank)); } }
@@ -81,15 +95,25 @@ namespace WpfNavy.ViewModels
         }
         public ICommand AddDepCommand => addDepCommand ?? (addDepCommand = new RelayCommand((e) =>
         {
-            Bank.Deps.Add(new Dep());
+            Dep dep;
+            Bank.Deps.Add(dep = new Dep());
             AdjustColumnWidth(e as GridViewColumn);
+            Log($"Добавлен отдел {dep}");
         }));
         public ICommand AddClientCommand => addClientCommand ?? (addClientCommand = new RelayCommand((e) =>
         {
-            Dep.Clients.Add(new Client());
+            Client client;
+            Dep.Clients.Add(client = new Client());
             AdjustColumnWidth(e as GridViewColumn);
+            Log($"Добавлен клиент {client} в отдел {Dep}");
         }));
-        public ICommand AddAccountCommand => addAccountCommand ?? (addAccountCommand = new RelayCommand((e) => Client.Accounts.Add(new Account())));
+        public ICommand AddAccountCommand => addAccountCommand ?? (addAccountCommand = new RelayCommand((e) =>
+        {
+            Account account;
+            Client.Accounts.Add(account = new Account());
+            Log($"Добавлен счет {account} клиенту {Client} в отделе {Dep}");
+
+        }));
         public ICommand RemoveDepCommand => removeDepCommand ?? (removeDepCommand = new RelayCommand(RemoveDep));
         public ICommand RemoveClientCommand => removeClientCommand ?? (removeClientCommand = new RelayCommand(RemoveClient));
         public ICommand RemoveAccCommand => removeAccCommand ?? (removeAccCommand = new RelayCommand(RemoveAcc));
@@ -97,12 +121,21 @@ namespace WpfNavy.ViewModels
         public ICommand AccSortByNmbCommand => accSortByNmbCommand ?? (accSortByNmbCommand = new RelayCommand((e) => SortBy(e, "Number")));
         public ICommand AccSortBySizeCommand => accSortBySizeCommand ?? (accSortBySizeCommand = new RelayCommand((e) => SortBy(e, "Size")));
         public ICommand AccSortByRateCommand => accSortByRateCommand ?? (accSortByRateCommand = new RelayCommand((e) => SortBy(e, "Rate")));
+        public ICommand FromSelectedCommand => fromSelectedCommand ?? (fromSelectedCommand = new RelayCommand(FromSelected));
+        public ICommand ToSelectedCommand => toSelectedCommand ?? (toSelectedCommand = new RelayCommand(ToSelected));
+        public ICommand DoTransferCommand => doTransferCommand ?? (doTransferCommand = new RelayCommand(DoTransfer));
+        public Account AccountFrom { get => accountFrom; set { accountFrom = value; RaisePropertyChanged(nameof(Bank.Accounts)); } }
+        public Account AccountTo { get => accountTo; set { accountTo = value; RaisePropertyChanged(nameof(Bank.Accounts)); } }
+        public bool FromIsSelected { get => fromIsSelected; set { fromIsSelected = value; RaisePropertyChanged(nameof(FromIsSelected)); } }
+        public decimal TransferAmount { get => transferAmount; set { transferAmount = value; RaisePropertyChanged(nameof(TransferAmount)); } }
+        public bool TransferEnabled { get => transferEnabled; set { transferEnabled = value; RaisePropertyChanged(nameof(TransferEnabled)); } }
         #endregion
         public MainViewModel() => ResetBank();
         private void ResetBank()
         {
             Bank = RandomBank.GetBank();
             Account = null; Dep = null; Client = null;
+            FromIsSelected = TransferEnabled =
             ClientSortEnabled = AccSortEnabled = RemoveDepEnabled = RemoveClientEnabled = RemoveAccEnabled = false;
         }
         #region Handlers
@@ -118,6 +151,7 @@ namespace WpfNavy.ViewModels
             if (Dep != null && MessageBox.Show("Удалить отдел?", "Удаление отдела " + Dep.Name, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 _ = Bank.Deps.Remove(Dep);
+                Log($"Удален отдел {Dep}");
             }
         }
         private void RemoveClient(object commandParameter)
@@ -125,6 +159,7 @@ namespace WpfNavy.ViewModels
             if (Client != null && MessageBox.Show("Удалить клиента?", "Удаление клиента " + Client.Name, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 _ = Dep.Clients.Remove(Client);
+                Log($"Удален клиент {Client}");
             }
         }
         private void RemoveAcc(object commandParameter)
@@ -132,6 +167,7 @@ namespace WpfNavy.ViewModels
             if (Account != null && MessageBox.Show("Удалить счет?", "Удаление счета " + Account.Number, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 _ = Client.Accounts.Remove(Account);
+                Log($"Удален счет {Account}");
             }
         }
         private void SortBy(object commandParameter, string PropName)
@@ -145,6 +181,32 @@ namespace WpfNavy.ViewModels
             // Сортируем список отделов по имени.
             listView.Items.SortDescriptions.Add(new SortDescription(PropName, curDepListSortDirection));
 
+        }
+        private void FromSelected(object commandParameter)
+        {
+            Account selAccount = (commandParameter as ComboBox).SelectedValue as Account;
+            AccountFrom = Bank.Accounts.FirstOrDefault((e) => e.ID == selAccount.ID);
+            FromIsSelected = AccountFrom != null;
+        }
+        private void ToSelected(object commandParameter)
+        {
+            Account selAccount = (commandParameter as ComboBox).SelectedValue as Account;
+            if (selAccount.ID == AccountFrom.ID)
+            {
+                MessageBox.Show("Нельзя делать перевод внутри одного и того же счета!!");
+                return;
+            }
+            AccountTo = Bank.Accounts.FirstOrDefault((e) => e.ID == selAccount.ID);
+            TransferEnabled = AccountTo != null;
+        }
+        private void DoTransfer(object commandParameter)
+        {
+            if (MessageBox.Show($"Вы действительно хотите перевести со счета №{AccountFrom.Number} на счет №{AccountTo.Number} сумму {TransferAmount}?",
+                "Перевод между счетами", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                return;
+            AccountFrom.Size -= TransferAmount;
+            AccountTo.Size += TransferAmount;
+            Log($"Со счета {AccountFrom} переведено {TransferAmount} на счет {AccountTo}");
         }
         #endregion
     }

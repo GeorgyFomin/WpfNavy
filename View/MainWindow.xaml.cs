@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WpfNavy.ViewModels;
 
 namespace WpfNavy
 {
@@ -10,7 +11,6 @@ namespace WpfNavy
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             InitializeComponent();

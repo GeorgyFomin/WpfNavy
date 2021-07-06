@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows;
-using System.Windows.Input;
-using WpfNavy.Commands;
 
 namespace ClassLibrary
 {
@@ -17,7 +13,10 @@ namespace ClassLibrary
         /// <summary>
         /// Устанавливает и возвращает ссылки на клиентов.
         /// </summary>
-        public ObservableCollection<Client> Clients { get => clients; set => clients = value ?? new ObservableCollection<Client>(); }
+        public ObservableCollection<Client> Clients
+        {
+            get => clients; set => clients = value ?? new ObservableCollection<Client>();
+        }
         public Dep() : base() { }
         #endregion
         public Dep(string name = null, ObservableCollection<Client> clients = null) : base(name)

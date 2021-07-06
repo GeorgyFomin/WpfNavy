@@ -42,6 +42,24 @@ namespace ClassLibrary
                 return deposits;
             }
         }
+        public ObservableCollection<Account> Accounts
+        {
+            get
+            {
+                ObservableCollection<Account> accounts = new ObservableCollection<Account>();
+                foreach (Dep dep in deps)
+                {
+                    foreach (Client client in dep.Clients)
+                    {
+                        foreach (Account account in client.Accounts)
+                        {
+                            accounts.Add(account);
+                        }
+                    }
+                }
+                return accounts;
+            }
+        }
         /// <summary>
         /// Возвращает список всех кредитов банка.
         /// </summary>

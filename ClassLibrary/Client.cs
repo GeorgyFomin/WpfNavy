@@ -14,7 +14,10 @@ namespace ClassLibrary
         /// <summary>
         /// Устанавливает и возвращает ссылки на счета клиента.
         /// </summary>
-        public ObservableCollection<Account> Accounts { get => accounts; set => accounts = value ?? new ObservableCollection<Account>();  }
+        public ObservableCollection<Account> Accounts
+        {
+            get => accounts; set => accounts = value ?? new ObservableCollection<Account>();
+        }
         #endregion
         public Client() : base() { }
         public Client(string name = null, ObservableCollection<Account> accounts = null) : base(name)

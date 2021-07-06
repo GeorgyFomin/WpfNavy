@@ -25,7 +25,7 @@ namespace ClassLibrary
         /// Устанавливает и возвращает флаг капитализации вклада.
         /// </summary>
         public bool Cap { get; set; }
-        public string AccFields => $"{Number,-16}{Size,-16:n}\t{Rate:g3}\t{Cap}";
+        public string AccFields => $"{Number,-16};{Size,-16:n}\t{Rate:g3}\t{Cap}";
         public string Info => header + "\n" + AccFields;
         #endregion
         public Account() : base() => Number = (uint)GetHashCode();
