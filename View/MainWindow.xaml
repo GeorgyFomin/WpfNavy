@@ -73,16 +73,16 @@
                 <TextBox x:Name="bankNameBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center"
                      Text= "{Binding Bank.Name, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Dep: " />
-                <TextBox x:Name="topDepNameBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center" 
+                <TextBox x:Name="topDepNameBox" Foreground="Yellow" Background="Black" VerticalAlignment="Center" Width="50"
                      Text= "{Binding Dep.Name, UpdateSourceTrigger=PropertyChanged}" LostFocus="TextBoxEditNameHandler" KeyDown="TextBoxEditNameHandler" />
                 <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Client: " />
-                <TextBox x:Name="topClientNameBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center" 
+                <TextBox x:Name="topClientNameBox" Foreground="Yellow" Background="Black" VerticalAlignment="Center" Width="50"
                      Text= "{Binding Client.Name, UpdateSourceTrigger=PropertyChanged}" LostFocus="TextBoxEditNameHandler" KeyDown="TextBoxEditNameHandler" />
                 <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Account: Size " />
-                <TextBox x:Name="accNameBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center" 
+                <TextBox x:Name="accNameBox" Foreground="Yellow" Background="Black" VerticalAlignment="Center" Width="70"
                      Text= "{Binding Account.Size, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "; Rate " />
-                <TextBox x:Name="accRateBox" Foreground="Yellow" Background="Transparent" VerticalAlignment="Center" 
+                <TextBox x:Name="accRateBox" Foreground="Yellow" Background="Black" VerticalAlignment="Center" Width="50"
                      Text= "{Binding Account.Rate, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "; Cap " />
                 <CheckBox VerticalAlignment="Center" IsChecked= "{Binding Account.Cap, UpdateSourceTrigger=PropertyChanged}" />
@@ -260,7 +260,7 @@
                     </i:Interaction.Triggers>
                 </ComboBox>
                 <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " на счет "/>
-                <ComboBox x:Name="toBox" ItemsSource="{Binding Bank.Accounts}" DisplayMemberPath="Number" IsEnabled="{Binding FromIsSelected}" >
+                <ComboBox x:Name="toBox" ItemsSource="{Binding Bank.Accounts}" DisplayMemberPath="Number" IsEnabled="{Binding FromIsSelected}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction Command="{Binding ToSelectedCommand}" CommandParameter="{Binding ElementName=toBox}"/>
@@ -268,8 +268,8 @@
                     </i:Interaction.Triggers>
                 </ComboBox>
                 <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Сумма "/>
-                <TextBox Width="100" Foreground="Yellow" Background="Transparent" Text="{Binding TransferAmount}" IsEnabled="{Binding TransferEnabled}"/>
-                <Button Background="Transparent" Foreground="LightGreen" Content="Перевести" Command="{Binding DoTransferCommand}" />
+                <TextBox Width="70" Foreground="Yellow" Background="Black" Text="{Binding TransferAmount}" IsEnabled="{Binding TransferEnabled}"/>
+                <Button Style="{StaticResource headerBtn}" Content="Перевести" IsEnabled="{Binding TransferEnabled}" Command="{Binding DoTransferCommand}" />
             </StackPanel>
         </Grid>
     </DockPanel>
