@@ -33,7 +33,7 @@ namespace ClassLibrary
         /// Готовит текстовое представление информации об отделе.
         /// </summary>
         /// <returns>Возвращает текстовое представление информации.</returns>
-        public string Info => string.Format(header + "\n" + Name);
+        public string Info() => string.Format(header + "\n" + Name);
         #region Printing
         /// <summary>
         /// Печатает заголовок полей объекта.

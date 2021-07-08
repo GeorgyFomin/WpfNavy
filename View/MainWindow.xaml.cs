@@ -25,7 +25,9 @@ namespace WpfNavy
             if ((e is KeyEventArgs arg && arg.Key == Key.Enter) || !(e is KeyEventArgs))
             {
                 string name = (sender as TextBox).Name;
-                AdjustColumnWidth(name == "clientNameBox" || name == "topClientNameBox" ? clientNameСolumn : depNameColumn);
+                bool clientNameChanged = name == "clientNameBox" || name == "topClientNameBox";
+                AdjustColumnWidth(clientNameChanged ? clientNameСolumn : depNameColumn);
+                MainViewModel.Log("Изменено имя " + (clientNameChanged ? "клиента " : "отдела ") + (sender as TextBox).Text);
             }
         }
     }

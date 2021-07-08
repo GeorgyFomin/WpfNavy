@@ -25,8 +25,8 @@ namespace ClassLibrary
         /// Устанавливает и возвращает флаг капитализации вклада.
         /// </summary>
         public bool Cap { get; set; }
-        public string AccFields => $"{Number,-16};{Size,-16:n}\t{Rate:g3}\t{Cap}";
-        public string Info => header + "\n" + AccFields;
+        public string AccFields() => $"{Number,-16};{Size,-16:n}\t{Rate:g3}\t{Cap}";
+        public string Info() => header + "\n" + AccFields();
         #endregion
         public Account() : base() => Number = (uint)GetHashCode();
         #region Printing
@@ -39,7 +39,7 @@ namespace ClassLibrary
         /// Печатает поля счета.
         /// </summary>
         /// <param name="tw">Райтер.</param>
-        public void PrintFields(TextWriter tw) => tw.WriteLine(AccFields);
+        public void PrintFields(TextWriter tw) => tw.WriteLine(AccFields());
         /// <summary>
         /// Печатает информацию о счете.
         /// </summary>

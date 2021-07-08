@@ -12,13 +12,9 @@ namespace ClassLibrary
     public class GUIDed
     {
         /// <summary>
-        /// Хранит уникальный идентификатор.
-        /// </summary>
-        readonly Guid id = Guid.NewGuid();
-        /// <summary>
         /// Возвращает уникальный идентификатор.
         /// </summary>
-        public Guid ID => id;
+        public Guid ID { get; } = Guid.NewGuid();
         /// <summary>
         /// Инициализирует объект.
         /// </summary>

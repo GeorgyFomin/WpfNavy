@@ -61,7 +61,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width=".3*" x:Name="col0"/>
@@ -87,6 +88,27 @@
                 <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "; Cap " />
                 <CheckBox VerticalAlignment="Center" IsChecked= "{Binding Account.Cap, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3" Grid.Row="1">
+                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "Перевод со счета "/>
+                <ComboBox x:Name="fromBox" ItemsSource="{Binding Bank.Accounts}" DisplayMemberPath="Number">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding FromSelectedCommand}" CommandParameter="{Binding ElementName=fromBox}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " на счет "/>
+                <ComboBox x:Name="toBox" ItemsSource="{Binding Bank.Accounts}" DisplayMemberPath="Number" IsEnabled="{Binding FromIsSelected}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding ToSelectedCommand}" CommandParameter="{Binding ElementName=toBox}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Сумма "/>
+                <TextBox Width="70" Foreground="Yellow" Background="Black" Text="{Binding TransferAmount}" IsEnabled="{Binding TransferEnabled}"/>
+                <Button Style="{StaticResource headerBtn}" Content="Перевести" IsEnabled="{Binding TransferEnabled}" Command="{Binding DoTransferCommand}" />
+            </StackPanel>
             <Button Grid.Column="0" Grid.Row="2" Content="Sort Departments" Style="{StaticResource headerBtn}" 
                     Command="{Binding SortByNameCommand}" CommandParameter="{Binding ElementName=depListView}">
             </Button>
@@ -100,7 +122,49 @@
                 <Button Content="Size" Style="{StaticResource headerBtn}" Command="{Binding AccSortBySizeCommand}" CommandParameter="{Binding ElementName=accListView}"/>
                 <Button Content="Rate" Style="{StaticResource headerBtn}" Command="{Binding AccSortByRateCommand}" CommandParameter="{Binding ElementName=accListView}"/>
             </StackPanel>
-            <ListView x:Name="depListView" Grid.Row="3" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Bank.Deps}">
+            <DataGrid x:Name="depGrid" Grid.Row="3" ItemsSource="{Binding Bank.Deps}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                </DataGrid.Columns>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding DepSelectedCommand}" CommandParameter="{Binding ElementName=depGrid}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseRightButtonDown">
+                        <i:InvokeCommandAction Command="{Binding RemoveDepCommand}" CommandParameter="{Binding ElementName=depGrid}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </DataGrid>
+            <DataGrid x:Name="clientGrid" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Clients}" AutoGenerateColumns="False" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                </DataGrid.Columns>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding ClientSelectedCommand}" CommandParameter="{Binding ElementName=clientGrid}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseRightButtonDown">
+                        <i:InvokeCommandAction Command="{Binding RemoveClientCommand}" CommandParameter="{Binding ElementName=clientGrid}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </DataGrid>
+            <DataGrid x:Name="accGrid" Grid.Row="3" Grid.Column="2" ItemsSource="{Binding Accounts}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Number" Binding="{Binding Number}"/>
+                    <DataGridTextColumn Header="Size" Binding="{Binding Size}"/>
+                    <DataGridTextColumn Header="Rate" Binding="{Binding Rate}"/>
+                    <DataGridCheckBoxColumn Header="Cap" Binding="{Binding Cap}"/>
+                </DataGrid.Columns>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding AccSelectedCommand}" CommandParameter="{Binding ElementName=accGrid}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseRightButtonDown">
+                        <i:InvokeCommandAction Command="{Binding RemoveAccCommand}" CommandParameter="{Binding ElementName=accGrid}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </DataGrid>
+            <ListView x:Name="depListView" Grid.Row="4" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Bank.Deps}">
                 <!--ItemContainerStyle="{StaticResource ListViewItemStyle1}">-->
                 <ListView.Resources>
                     <ContextMenu x:Key="ItemContextMenu">
@@ -143,7 +207,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <ListView x:Name="clientListView" Grid.Row="3" Grid.Column="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Clients}">
+            <ListView x:Name="clientListView" Grid.Row="4" Grid.Column="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Clients}">
                 <!--ItemContainerStyle="{StaticResource ListViewItemStyle1}">-->
                 <ListView.Resources>
                     <ContextMenu x:Name="clientMenu" x:Key="ItemContextMenu">
@@ -188,7 +252,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <ListView x:Name="accListView" Grid.Row="3" Grid.Column="2" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Accounts}">
+            <ListView x:Name="accListView" Grid.Row="4" Grid.Column="2" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Accounts}">
                 <!--ItemContainerStyle="{StaticResource ListViewItemStyle1}">-->
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -250,27 +314,6 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3" Grid.Row="1">
-                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "Перевод со счета "/>
-                <ComboBox x:Name="fromBox" ItemsSource="{Binding Bank.Accounts}" DisplayMemberPath="Number">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding FromSelectedCommand}" CommandParameter="{Binding ElementName=fromBox}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ComboBox>
-                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " на счет "/>
-                <ComboBox x:Name="toBox" ItemsSource="{Binding Bank.Accounts}" DisplayMemberPath="Number" IsEnabled="{Binding FromIsSelected}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding ToSelectedCommand}" CommandParameter="{Binding ElementName=toBox}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ComboBox>
-                <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Сумма "/>
-                <TextBox Width="70" Foreground="Yellow" Background="Black" Text="{Binding TransferAmount}" IsEnabled="{Binding TransferEnabled}"/>
-                <Button Style="{StaticResource headerBtn}" Content="Перевести" IsEnabled="{Binding TransferEnabled}" Command="{Binding DoTransferCommand}" />
-            </StackPanel>
         </Grid>
     </DockPanel>
 </Window>

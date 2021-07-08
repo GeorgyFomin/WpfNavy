@@ -15,7 +15,7 @@ namespace WpfNavy.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private static void Log(string report)
+        public static void Log(string report)
         {
             using (TextWriter tw = File.AppendText("log.txt"))
                 tw.WriteLine(DateTime.Now.ToString() + ":" + report);
@@ -82,12 +82,13 @@ namespace WpfNavy.ViewModels
         }));
         public ICommand CloseCommand => closeCommand ?? (closeCommand = new RelayCommand((e) => (e as MainWindow).Close()));
         public ICommand ResetBankCommand => resetBankCommand ?? (resetBankCommand = new RelayCommand((e) => ResetBank()));
-        public ICommand DepSelectedCommand => depSelectedCommand ?? (depSelectedCommand = new RelayCommand(
-            (e) => ClientSortEnabled = RemoveDepEnabled = (Clients = (e as ListView).SelectedItem is Dep dep ? (Dep = dep).Clients : null) != null));
-        public ICommand ClientSelectedCommand => clientSelectedCommand ?? (clientSelectedCommand = new RelayCommand(
-            (e) => AccSortEnabled = RemoveClientEnabled = (Accounts = (e as ListView).SelectedItem is Client client ? (Client = client).Accounts : null) != null));
-        public ICommand AccSelectedCommand => accSelectedCommand ?? (accSelectedCommand = new RelayCommand(
-            (e) => RemoveAccEnabled = (Account = ((e as ListView).SelectedItem is Account account) ? account : null) != null));
+        public ICommand DepSelectedCommand => depSelectedCommand ?? (depSelectedCommand = new RelayCommand((e) => ClientSortEnabled = RemoveDepEnabled =
+        (Clients = (e is ListView ? (e as ListView).SelectedItem : (e as DataGrid).SelectedItem) is Dep dep ? (Dep = dep).Clients : null) != null));
+        public ICommand ClientSelectedCommand => clientSelectedCommand ?? (clientSelectedCommand =
+            new RelayCommand((e) => AccSortEnabled = RemoveClientEnabled =
+            (Accounts = (e is ListView ? (e as ListView).SelectedItem : (e as DataGrid).SelectedItem) is Client client ? (Client = client).Accounts : null) != null));
+        public ICommand AccSelectedCommand => accSelectedCommand ?? (accSelectedCommand = new RelayCommand((e) => RemoveAccEnabled =
+        (Account = ((e is ListView ? (e as ListView).SelectedItem : (e as DataGrid).SelectedItem) is Account account) ? account : null) != null));
         private void AdjustColumnWidth(GridViewColumn column)
         {
             for (int i = 0; i < 2; i++)
@@ -141,13 +142,6 @@ namespace WpfNavy.ViewModels
         #region Handlers
         private void RemoveDep(object commandParameter)
         {
-            //if (commandParameter == null)
-            //{
-            //    commandParameter = ((Mouse.DirectlyOver as ScrollViewer).Content as ItemsPresenter);// FrameworkElement;
-            //    if (commandParameter != null)
-            //        commandParameter = ((FrameworkElement)commandParameter).DataContext;
-            //    else return;
-            //}
             if (Dep != null && MessageBox.Show("Удалить отдел?", "Удаление отдела " + Dep.Name, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 _ = Bank.Deps.Remove(Dep);

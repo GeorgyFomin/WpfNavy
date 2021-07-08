@@ -31,7 +31,7 @@ namespace ClassLibrary
         public void Print(TextWriter tw)
         {
             // Печатаем информацию о клиенте.
-            tw.WriteLine("Клиент\n" + Info + "\nСчета");
+            tw.WriteLine("Клиент\n" + Info() + "\nСчета");
             tw.WriteLine(Account.header);
             // Печатаем сведения о счетах.
             foreach (Account account in Accounts)
