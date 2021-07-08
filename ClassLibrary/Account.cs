@@ -46,6 +46,6 @@ namespace ClassLibrary
         /// <param name="tw"></param>
         public void Print(TextWriter tw) => tw.WriteLine(this);
         #endregion
-        public override string ToString() => (Size < 0 ? "Loan " : "Deposit ") + "№" + $"{Number}\tSize {Size}\tRate {Rate:g3}\tCap {Cap}";
+        public override string ToString() => (Size < 0 ? "Loan " : "Deposit ") + "№" + $"{Number};Size {Size};Rate {Rate:g3};Cap {Cap}";
     }
 }

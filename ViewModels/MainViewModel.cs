@@ -59,6 +59,12 @@ namespace WpfNavy.ViewModels
         private bool transferEnabled;
         private Account accountFrom;
         private Account accountTo;
+        private RelayCommand endDepEditCommand;
+        private RelayCommand endClientEditCommand;
+        private RelayCommand endAccEditCommand;
+        private RelayCommand addingDepCommand;
+        private RelayCommand addingAccCommand;
+        private RelayCommand addingClientCommand;
         #endregion
         #region Properties
         public Bank Bank { get => bank; set { bank = value; RaisePropertyChanged(nameof(Bank)); } }
@@ -89,11 +95,6 @@ namespace WpfNavy.ViewModels
             (Accounts = (e is ListView ? (e as ListView).SelectedItem : (e as DataGrid).SelectedItem) is Client client ? (Client = client).Accounts : null) != null));
         public ICommand AccSelectedCommand => accSelectedCommand ?? (accSelectedCommand = new RelayCommand((e) => RemoveAccEnabled =
         (Account = ((e is ListView ? (e as ListView).SelectedItem : (e as DataGrid).SelectedItem) is Account account) ? account : null) != null));
-        private void AdjustColumnWidth(GridViewColumn column)
-        {
-            for (int i = 0; i < 2; i++)
-                column.Width = double.IsNaN(column.Width) ? column.ActualWidth : double.NaN;
-        }
         public ICommand AddDepCommand => addDepCommand ?? (addDepCommand = new RelayCommand((e) =>
         {
             Dep dep;
@@ -130,6 +131,12 @@ namespace WpfNavy.ViewModels
         public bool FromIsSelected { get => fromIsSelected; set { fromIsSelected = value; RaisePropertyChanged(nameof(FromIsSelected)); } }
         public decimal TransferAmount { get => transferAmount; set { transferAmount = value; RaisePropertyChanged(nameof(TransferAmount)); } }
         public bool TransferEnabled { get => transferEnabled; set { transferEnabled = value; RaisePropertyChanged(nameof(TransferEnabled)); } }
+        public ICommand EndDepEditCommand => endDepEditCommand ?? (endDepEditCommand = new RelayCommand((e) => Log($"Имя отдела {Dep} отредактировано.")));
+        public ICommand EndClientEditCommand => endClientEditCommand ?? (endClientEditCommand = new RelayCommand((e) => Log($"Имя клиента {Client} отредактировано.")));
+        public ICommand EndAccEditCommand => endAccEditCommand ?? (endAccEditCommand = new RelayCommand((e) => Log($"Счет {Account} отредактирован.")));
+        public ICommand AddingDepCommand => addingDepCommand ?? (addingDepCommand = new RelayCommand((e) => Log($"К банку добавлен новый отдел.")));
+        public ICommand AddingClientCommand => addingClientCommand ?? (addingClientCommand = new RelayCommand((e) => Log($"В отдел {Dep} добавлен новый клиент.")));
+        public ICommand AddingAccCommand => addingAccCommand ?? (addingAccCommand = new RelayCommand((e) => Log($"У клиента {Client} открыт новый счет.")));
         #endregion
         public MainViewModel() => ResetBank();
         private void ResetBank()
@@ -138,6 +145,23 @@ namespace WpfNavy.ViewModels
             Account = null; Dep = null; Client = null;
             FromIsSelected = TransferEnabled =
             ClientSortEnabled = AccSortEnabled = RemoveDepEnabled = RemoveClientEnabled = RemoveAccEnabled = false;
+        }
+        private void SortBy(object commandParameter, string PropName)
+        {
+            if (commandParameter == null) return;
+            ListView listView = commandParameter as ListView;
+            // Меняем порядок сортировки на противоположный.
+            curDepListSortDirection = (ListSortDirection)(((int)curDepListSortDirection + 1) % 2);
+            // Очищаем список сортировки.
+            listView.Items.SortDescriptions.Clear();
+            // Сортируем список отделов по имени.
+            listView.Items.SortDescriptions.Add(new SortDescription(PropName, curDepListSortDirection));
+
+        }
+        private void AdjustColumnWidth(GridViewColumn column)
+        {
+            for (int i = 0; i < 2; i++)
+                column.Width = double.IsNaN(column.Width) ? column.ActualWidth : double.NaN;
         }
         #region Handlers
         private void RemoveDep(object commandParameter)
@@ -163,18 +187,6 @@ namespace WpfNavy.ViewModels
                 _ = Client.Accounts.Remove(Account);
                 Log($"Удален счет {Account}");
             }
-        }
-        private void SortBy(object commandParameter, string PropName)
-        {
-            if (commandParameter == null) return;
-            ListView listView = commandParameter as ListView;
-            // Меняем порядок сортировки на противоположный.
-            curDepListSortDirection = (ListSortDirection)(((int)curDepListSortDirection + 1) % 2);
-            // Очищаем список сортировки.
-            listView.Items.SortDescriptions.Clear();
-            // Сортируем список отделов по имени.
-            listView.Items.SortDescriptions.Add(new SortDescription(PropName, curDepListSortDirection));
-
         }
         private void FromSelected(object commandParameter)
         {

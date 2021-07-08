@@ -133,6 +133,12 @@
                     <i:EventTrigger EventName="MouseRightButtonDown">
                         <i:InvokeCommandAction Command="{Binding RemoveDepCommand}" CommandParameter="{Binding ElementName=depGrid}"/>
                     </i:EventTrigger>
+                    <i:EventTrigger EventName="CellEditEnding">
+                        <i:InvokeCommandAction Command="{Binding EndDepEditCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="AddingNewItem">
+                        <i:InvokeCommandAction Command="{Binding AddingDepCommand}" />
+                    </i:EventTrigger>
                 </i:Interaction.Triggers>
             </DataGrid>
             <DataGrid x:Name="clientGrid" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Clients}" AutoGenerateColumns="False" >
@@ -145,6 +151,12 @@
                     </i:EventTrigger>
                     <i:EventTrigger EventName="MouseRightButtonDown">
                         <i:InvokeCommandAction Command="{Binding RemoveClientCommand}" CommandParameter="{Binding ElementName=clientGrid}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="CellEditEnding">
+                        <i:InvokeCommandAction Command="{Binding EndClientEditCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="AddingNewItem">
+                        <i:InvokeCommandAction Command="{Binding AddingClientCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </DataGrid>
@@ -161,6 +173,12 @@
                     </i:EventTrigger>
                     <i:EventTrigger EventName="MouseRightButtonDown">
                         <i:InvokeCommandAction Command="{Binding RemoveAccCommand}" CommandParameter="{Binding ElementName=accGrid}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="CellEditEnding">
+                        <i:InvokeCommandAction Command="{Binding EndAccEditCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="AddingNewItem">
+                        <i:InvokeCommandAction Command="{Binding AddingAccCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </DataGrid>
