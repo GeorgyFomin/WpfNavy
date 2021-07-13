@@ -34,7 +34,7 @@ namespace ClassLibrary
                     {
                         foreach (Account account in client.Accounts)
                         {
-                            if (account.Size > 0)
+                            if (account.Size >= 0)
                                 deposits.Add(account);
                         }
                     }
@@ -74,7 +74,7 @@ namespace ClassLibrary
                     {
                         foreach (Account account in client.Accounts)
                         {
-                            if (account.Size < 0)
+                            if (account.Size <= 0)
                                 loans.Add(account);
                         }
                     }

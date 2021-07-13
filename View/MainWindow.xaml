@@ -122,7 +122,13 @@
                 <Button Content="Size" Style="{StaticResource headerBtn}" Command="{Binding AccSortBySizeCommand}" CommandParameter="{Binding ElementName=accListView}"/>
                 <Button Content="Rate" Style="{StaticResource headerBtn}" Command="{Binding AccSortByRateCommand}" CommandParameter="{Binding ElementName=accListView}"/>
             </StackPanel>
-            <DataGrid x:Name="depGrid" Grid.Row="3" ItemsSource="{Binding Bank.Deps}" AutoGenerateColumns="False">
+            <DataGrid x:Name="depGrid" Grid.Row="3" ItemsSource="{Binding Bank.Deps}" AutoGenerateColumns="False" Background="{StaticResource mainBckgr}">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style BasedOn="{StaticResource ResourceKey=BlackNavy}"/>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.RowStyle>
+                    <Style BasedOn="{StaticResource ResourceKey=BlackNavy}"/>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 </DataGrid.Columns>
@@ -141,7 +147,13 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </DataGrid>
-            <DataGrid x:Name="clientGrid" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Clients}" AutoGenerateColumns="False" >
+            <DataGrid x:Name="clientGrid" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Clients}" AutoGenerateColumns="False" Background="{StaticResource mainBckgr}">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style BasedOn="{StaticResource ResourceKey=BlackNavy}"/>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.RowStyle>
+                    <Style BasedOn="{StaticResource ResourceKey=BlackNavy}"/>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 </DataGrid.Columns>
@@ -160,7 +172,13 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </DataGrid>
-            <DataGrid x:Name="accGrid" Grid.Row="3" Grid.Column="2" ItemsSource="{Binding Accounts}" AutoGenerateColumns="False">
+            <DataGrid Background="{StaticResource mainBckgr}" x:Name="accGrid" Grid.Row="3" Grid.Column="2" ItemsSource="{Binding Accounts}" AutoGenerateColumns="False">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style BasedOn="{StaticResource ResourceKey=BlackNavy}"/>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.RowStyle>
+                    <Style BasedOn="{StaticResource ResourceKey=BlackNavy}"/>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Number" Binding="{Binding Number}"/>
                     <DataGridTextColumn Header="Size" Binding="{Binding Size}"/>
@@ -183,7 +201,6 @@
                 </i:Interaction.Triggers>
             </DataGrid>
             <ListView x:Name="depListView" Grid.Row="4" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Bank.Deps}">
-                <!--ItemContainerStyle="{StaticResource ListViewItemStyle1}">-->
                 <ListView.Resources>
                     <ContextMenu x:Key="ItemContextMenu">
                         <MenuItem Header="Edit">
@@ -271,7 +288,6 @@
                 </ListView.View>
             </ListView>
             <ListView x:Name="accListView" Grid.Row="4" Grid.Column="2" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Accounts}">
-                <!--ItemContainerStyle="{StaticResource ListViewItemStyle1}">-->
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding AccSelectedCommand}" CommandParameter="{Binding ElementName=accListView}"/>
