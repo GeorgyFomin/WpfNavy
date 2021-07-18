@@ -1,0 +1,14 @@
+            <TreeView Grid.Row="5" Grid.ColumnSpan="3" >
+                <TreeViewItem Header="{Binding Bank.Name}" ItemsSource="{Binding Bank.Deps}">
+                    <TreeViewItem.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Clients}">
+                            <TextBlock Text="{Binding Name}"/>
+                            <HierarchicalDataTemplate.ItemTemplate>
+                                <DataTemplate>
+                                    <TreeViewItem Header="{Binding Name}" ItemsSource="{Binding Accounts}"/>
+                                </DataTemplate>
+                            </HierarchicalDataTemplate.ItemTemplate>
+                        </HierarchicalDataTemplate>
+                    </TreeViewItem.ItemTemplate>
+                </TreeViewItem>
+            </TreeView>
