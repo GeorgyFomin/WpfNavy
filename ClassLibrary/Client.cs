@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 
 namespace ClassLibrary
@@ -9,21 +8,15 @@ namespace ClassLibrary
         /// <summary>
         /// Хранит список вкладов.
         /// </summary>
-        private ObservableCollection<Account> accounts = new ObservableCollection<Account>();
+        private ObservableCollection<Account> accounts;
         #region Properties
         /// <summary>
         /// Устанавливает и возвращает ссылки на счета клиента.
         /// </summary>
-        public ObservableCollection<Account> Accounts
-        {
-            get => accounts; set => accounts = value ?? new ObservableCollection<Account>();
-        }
+        public ObservableCollection<Account> Accounts => accounts ?? (accounts = new ObservableCollection<Account>());
         #endregion
         public Client() : base() { }
-        public Client(string name = null, ObservableCollection<Account> accounts = null) : base(name)
-        {
-            Accounts = accounts;
-        }
+        public Client(string name = null, ObservableCollection<Account> accounts = null) : base(name) => this.accounts = accounts;
         /// <summary>
         /// Печатает сведения о клиенте.
         /// </summary>

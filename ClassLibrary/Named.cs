@@ -19,6 +19,7 @@ namespace ClassLibrary
         /// Устанавливает и возвращает имя.
         /// </summary>
         public string Name { get => name; set => name = string.IsNullOrEmpty(value) ? "Noname" : value; }
+        public Named() : base() { }
         /// <summary>
         /// Инициализирует поля.
         /// </summary>
