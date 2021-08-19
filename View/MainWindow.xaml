@@ -8,112 +8,330 @@
         xmlns:local="clr-namespace:WpfNavy"
     xmlns:library="clr-namespace:ClassLibrary;assembly=ClassLibrary"
         xmlns:viewmodels="clr-namespace:WpfNavy.ViewModels" 
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" 
         x:Name="mainWnd" x:Class="WpfNavy.MainWindow"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance Type={x:Type viewmodels:MainViewModel}}"
-        Title="MainWindow" Height="450" Width="800" WindowStyle="None" Style="{StaticResource ResourceKey=BlackNavy}">
+        Title="MainWindow" Height="450" Width="800" WindowStyle="None">
     <Window.Resources>
-        <!--<HierarchicalDataTemplate x:Key="AccountTemplate" DataType="{x:Type library:Account}" >
-            <TextBlock Text="{Binding Account.Number}"/>
-        </HierarchicalDataTemplate>
-        <HierarchicalDataTemplate x:Key="ClientTemplate" DataType="{x:Type library:Client}">
-            <TreeViewItem Header="{Binding Client.Name}">
-                <TreeViewItem Header="Accounts" ItemsSource="{Binding Client.Accounts}" ItemTemplate="{StaticResource AccountTemplate}"/>
-            </TreeViewItem>
-        </HierarchicalDataTemplate>
-        <HierarchicalDataTemplate x:Key="DepTemplate" DataType="{x:Type library:Dep}">
-            <TreeViewItem Header="{Binding Dep.Name}">
-                <TreeViewItem Header="Clients" ItemsSource="{Binding Dep.Clients}" ItemTemplate="{StaticResource ClientTemplate}"/>
-            </TreeViewItem>
-        </HierarchicalDataTemplate>
-        <HierarchicalDataTemplate x:Key="BankTemplate" DataType="{x:Type library:Bank}" ItemsSource="{Binding Bank.Deps}">
-            <TreeViewItem ItemTemplate="{StaticResource DepTemplate}"/>
-        </HierarchicalDataTemplate>-->
-        <!--<ControlTemplate x:Key="TreeViewItemControlTemplate1" TargetType="{x:Type TreeViewItem}">
-            <Grid>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" 
+                                   StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <LinearGradientBrush x:Key="ComboBox.Static.Background" EndPoint="0,1" StartPoint="0,0">
+            <!--<GradientStop Color="#FFF0F0F0" Offset="0.0"/>
+            <GradientStop Color="#FFE5E5E5" Offset="1.0"/>-->
+            <GradientStop Color="#FF000000" Offset="0.0"/>
+            <GradientStop Color="#FF0000AA" Offset="1.0"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ComboBox.Static.Border" Color="#FFACACAC"/>
+        <SolidColorBrush x:Key="ComboBox.Static.Editable.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ComboBox.Static.Editable.Border" Color="#FFABADB3"/>
+        <SolidColorBrush x:Key="ComboBox.Static.Editable.Button.Background" Color="Transparent"/>
+        <SolidColorBrush x:Key="ComboBox.Static.Editable.Button.Border" Color="Transparent"/>
+        <SolidColorBrush x:Key="ComboBox.MouseOver.Glyph" Color="#FF000000"/>
+        <LinearGradientBrush x:Key="ComboBox.MouseOver.Background" EndPoint="0,1" StartPoint="0,0">
+            <!--<GradientStop Color="#FFECF4FC" Offset="0.0"/>
+            <GradientStop Color="#FFDCECFC" Offset="1.0"/>-->
+            <GradientStop Color="Cyan" Offset="0.0"/>
+            <GradientStop Color="DarkCyan" Offset="1.0"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ComboBox.MouseOver.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Border" Color="#FF7EB4EA"/>
+        <LinearGradientBrush x:Key="ComboBox.MouseOver.Editable.Button.Background" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FFEBF4FC" Offset="0.0"/>
+            <GradientStop Color="#FFDCECFC" Offset="1.0"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Button.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="ComboBox.Pressed.Glyph" Color="#FF000000"/>
+        <LinearGradientBrush x:Key="ComboBox.Pressed.Background" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FFDAECFC" Offset="0.0"/>
+            <GradientStop Color="#FFC4E0FC" Offset="1.0"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ComboBox.Pressed.Border" Color="#FF569DE5"/>
+        <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Border" Color="#FF569DE5"/>
+        <LinearGradientBrush x:Key="ComboBox.Pressed.Editable.Button.Background" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FFDAEBFC" Offset="0.0"/>
+            <GradientStop Color="#FFC4E0FC" Offset="1.0"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Button.Border" Color="#FF569DE5"/>
+        <SolidColorBrush x:Key="ComboBox.Disabled.Glyph" Color="#FFBFBFBF"/>
+        <SolidColorBrush x:Key="ComboBox.Disabled.Background" Color="#FFF0F0F0"/>
+        <SolidColorBrush x:Key="ComboBox.Disabled.Border" Color="#FFD9D9D9"/>
+        <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Border" Color="#FFBFBFBF"/>
+        <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Background" Color="Transparent"/>
+        <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Border" Color="Transparent"/>
+        <SolidColorBrush x:Key="ComboBox.Static.Glyph" Color="Yellow"/>
+        <Style x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Focusable" Value="false"/>
+            <Setter Property="ClickMode" Value="Press"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border x:Name="templateRoot" BorderBrush="{StaticResource ComboBox.Static.Border}" BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{StaticResource ComboBox.Static.Background}" SnapsToDevicePixels="true">
+                            <Border x:Name="splitBorder" BorderBrush="Transparent" BorderThickness="1" HorizontalAlignment="Right" Margin="0" 
+                                    SnapsToDevicePixels="true" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
+                                <Path x:Name="arrow" Data="F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z" 
+                                      Fill="{StaticResource ComboBox.Static.Glyph}" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>
+                            </Border>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                    <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ComboBox.Static.Editable.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ComboBox.Static.Editable.Border}"/>
+                                <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.Static.Editable.Button.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.Static.Editable.Button.Border}"/>
+                            </MultiDataTrigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ComboBox.MouseOver.Glyph}"/>
+                            </Trigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ComboBox.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ComboBox.MouseOver.Border}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ComboBox.MouseOver.Editable.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ComboBox.MouseOver.Editable.Border}"/>
+                                <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.MouseOver.Editable.Button.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.MouseOver.Editable.Button.Border}"/>
+                            </MultiDataTrigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ComboBox.Pressed.Glyph}"/>
+                            </Trigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ComboBox.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ComboBox.Pressed.Border}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ComboBox.Pressed.Editable.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ComboBox.Pressed.Editable.Border}"/>
+                                <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.Pressed.Editable.Button.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.Pressed.Editable.Button.Border}"/>
+                            </MultiDataTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ComboBox.Disabled.Glyph}"/>
+                            </Trigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                </MultiDataTrigger.Conditions>
+                                <!--<Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ComboBox.Disabled.Background}"/>-->
+                                <Setter Property="Background" TargetName="templateRoot" Value="Brown"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ComboBox.Disabled.Border}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ComboBox.Disabled.Editable.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ComboBox.Disabled.Editable.Border}"/>
+                                <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.Disabled.Editable.Button.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.Disabled.Editable.Button.Border}"/>
+                            </MultiDataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
+            <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition MinWidth="19" Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <ToggleButton x:Name="Expander" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}">
-                    <ToggleButton.Style>
-                        <Style TargetType="{x:Type ToggleButton}">
-                            <Setter Property="Focusable" Value="False"/>
-                            <Setter Property="Width" Value="16"/>
-                            <Setter Property="Height" Value="16"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                        <Border Background="Transparent" Height="16" Padding="5" Width="16">
-                                            <Path x:Name="ExpandPath" Data="M0,0 L0,6 L6,0 z" Fill="White" Stroke="#FF818181">
-                                                <Path.RenderTransform>
-                                                    <RotateTransform Angle="135" CenterY="3" CenterX="3"/>
-                                                </Path.RenderTransform>
-                                            </Path>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsChecked" Value="True">
-                                                <Setter Property="RenderTransform" TargetName="ExpandPath">
-                                                    <Setter.Value>
-                                                        <RotateTransform Angle="180" CenterY="3" CenterX="3"/>
-                                                    </Setter.Value>
-                                                </Setter>
-                                                <Setter Property="Fill" TargetName="ExpandPath" Value="#FF595959"/>
-                                                <Setter Property="Stroke" TargetName="ExpandPath" Value="#FF262626"/>
-                                            </Trigger>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Stroke" TargetName="ExpandPath" Value="#FF27C7F7"/>
-                                                <Setter Property="Fill" TargetName="ExpandPath" Value="#FFCCEEFB"/>
-                                            </Trigger>
-                                            <MultiTrigger>
-                                                <MultiTrigger.Conditions>
-                                                    <Condition Property="IsMouseOver" Value="True"/>
-                                                    <Condition Property="IsChecked" Value="True"/>
-                                                </MultiTrigger.Conditions>
-                                                <Setter Property="Stroke" TargetName="ExpandPath" Value="#FF1CC4F7"/>
-                                                <Setter Property="Fill" TargetName="ExpandPath" Value="#FF82DFFB"/>
-                                            </MultiTrigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ToggleButton.Style>
-                </ToggleButton>
-                <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="1" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
-                    <ContentPresenter x:Name="PART_Header" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                </Border>
-                <ItemsPresenter x:Name="ItemsHost" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1"/>
+                <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" 
+                       IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" 
+                       PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
+                    <Themes:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" 
+                                                   MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
+                        <Border x:Name="dropDownBorder" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" 
+                                BorderThickness="1" Background="DarkBlue">
+                            <!--{DynamicResource {x:Static SystemColors.WindowBrushKey}}-->
+                            <ScrollViewer x:Name="DropDownScrollViewer">
+                                <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
+                                    <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+                                        <Rectangle x:Name="opaqueRect" Fill="{Binding Background, ElementName=dropDownBorder}" 
+                                                   Height="{Binding ActualHeight, ElementName=dropDownBorder}" 
+                                                   Width="{Binding ActualWidth, ElementName=dropDownBorder}"/>
+                                    </Canvas>
+                                    <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" 
+                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </Border>
+                    </Themes:SystemDropShadowChrome>
+                </Popup>
+                <ToggleButton x:Name="toggleButton" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                              Background="{TemplateBinding Background}" Grid.ColumnSpan="2" 
+                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                              Style="{StaticResource ComboBoxToggleButton}"/>
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" 
+                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Content="{TemplateBinding SelectionBoxItem}" 
+                                  ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" 
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="false" Margin="{TemplateBinding Padding}" 
+                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
             </Grid>
             <ControlTemplate.Triggers>
-                <Trigger Property="IsExpanded" Value="False">
-                    <Setter Property="Visibility" TargetName="ItemsHost" Value="Collapsed"/>
+                <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+                    <Setter Property="Margin" TargetName="shadow" Value="0,0,5,5"/>
+                    <Setter Property="Color" TargetName="shadow" Value="#71000000"/>
                 </Trigger>
-                <Trigger Property="HasItems" Value="False">
-                    <Setter Property="Visibility" TargetName="Expander" Value="Hidden"/>
-                </Trigger>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+                <Trigger Property="HasItems" Value="false">
+                    <Setter Property="Height" TargetName="dropDownBorder" Value="95"/>
                 </Trigger>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
-                        <Condition Property="IsSelected" Value="True"/>
-                        <Condition Property="IsSelectionActive" Value="False"/>
+                        <Condition Property="IsGrouping" Value="true"/>
+                        <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
                     </MultiTrigger.Conditions>
-                    <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
-                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}"/>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
                 </MultiTrigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                <Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
+                    <Setter Property="Canvas.Top" TargetName="opaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
+                    <Setter Property="Canvas.Left" TargetName="opaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
                 </Trigger>
             </ControlTemplate.Triggers>
-        </ControlTemplate>-->
+        </ControlTemplate>
+        <SolidColorBrush x:Key="TextBox.Static.Background" Color="White"/>
+        <Style x:Key="ComboBoxEditableTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="MinWidth" Value="0"/>
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <ScrollViewer x:Name="PART_ContentHost" Background="Transparent" Focusable="false" HorizontalScrollBarVisibility="Hidden" 
+                                      VerticalScrollBarVisibility="Hidden"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="ComboBoxEditableTemplate" TargetType="{x:Type ComboBox}">
+            <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                </Grid.ColumnDefinitions>
+                <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" 
+                       PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
+                    <Themes:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" 
+                                                   MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
+                        <Border x:Name="dropDownBorder" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" 
+                                BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+                            <ScrollViewer x:Name="DropDownScrollViewer">
+                                <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
+                                    <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+                                        <Rectangle x:Name="opaqueRect" Fill="{Binding Background, ElementName=dropDownBorder}" 
+                                                   Height="{Binding ActualHeight, ElementName=dropDownBorder}" Width="{Binding ActualWidth, ElementName=dropDownBorder}"/>
+                                    </Canvas>
+                                    <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" 
+                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </Border>
+                    </Themes:SystemDropShadowChrome>
+                </Popup>
+                <ToggleButton x:Name="toggleButton" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                              Background="{TemplateBinding Background}" Grid.ColumnSpan="2" 
+                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                              Style="{StaticResource ComboBoxToggleButton}"/>
+                <Border x:Name="border" Background="{StaticResource TextBox.Static.Background}" Margin="{TemplateBinding BorderThickness}">
+                    <TextBox x:Name="PART_EditableTextBox" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                             IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}" Margin="{TemplateBinding Padding}" 
+                             Style="{StaticResource ComboBoxEditableTextBox}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </Border>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="true">
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+                <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+                    <Setter Property="Margin" TargetName="shadow" Value="0,0,5,5"/>
+                    <Setter Property="Color" TargetName="shadow" Value="#71000000"/>
+                </Trigger>
+                <Trigger Property="HasItems" Value="false">
+                    <Setter Property="Height" TargetName="dropDownBorder" Value="95"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsGrouping" Value="true"/>
+                        <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                </MultiTrigger>
+                <Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
+                    <Setter Property="Canvas.Top" TargetName="opaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
+                    <Setter Property="Canvas.Left" TargetName="opaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style x:Key="ComboBoxStyle1" TargetType="{x:Type ComboBox}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource ComboBox.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ComboBox.Static.Border}"/>
+            <Setter Property="Foreground" Value="Yellow"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Padding" Value="6,3,5,3"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template" Value="{StaticResource ComboBoxTemplate}"/>
+            <Style.Triggers>
+                <Trigger Property="IsEditable" Value="true">
+                    <Setter Property="IsTabStop" Value="false"/>
+                    <Setter Property="Padding" Value="2"/>
+                    <Setter Property="Template" Value="{StaticResource ComboBoxEditableTemplate}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
+    <Window.Style>
+        <StaticResource ResourceKey="BlackNavy"/>
+    </Window.Style>
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Height="20" Background="Transparent" Orientation="Horizontal" FlowDirection="RightToLeft">
             <i:Interaction.Triggers>
@@ -151,7 +369,7 @@
                     <fa:IconBlock Width="20" Padding="0 3 0 0" Icon="WindowMinimize" Foreground="{StaticResource mainBtnColor}"/>
                 </StackPanel>
             </Button>
-            <Button Foreground="{StaticResource mainBtnColor}" Background="Transparent" BorderBrush="Transparent" Content="Random Bank">
+            <Button Foreground="{StaticResource mainBtnColor}" Background="Transparent" BorderBrush="Transparent" Content="Random Bank" Style="{StaticResource headerBtn}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <i:InvokeCommandAction Command="{Binding ResetBankCommand}" CommandParameter="{Binding ElementName=mainWnd}"/>
@@ -190,11 +408,11 @@
                 <TextBox x:Name="accRateBox" Foreground="Yellow" Background="Black" VerticalAlignment="Center" Width="50"
                      Text= "{Binding Account.Rate, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "; Cap " />
-                <CheckBox VerticalAlignment="Center" IsChecked= "{Binding Account.Cap, UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox VerticalAlignment="Center" IsChecked= "{Binding Account.Cap, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource checkBoxStyle}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3" Grid.Row="1">
                 <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = "Перевод со счета "/>
-                <ComboBox x:Name="fromBox" ItemsSource="{Binding Bank.Accounts}" DisplayMemberPath="Number">
+                <ComboBox x:Name="fromBox" ItemsSource="{Binding Bank.Accounts}" DisplayMemberPath="Number" Style="{DynamicResource ComboBoxStyle1}" IsReadOnly="True" >
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction Command="{Binding FromSelectedCommand}" CommandParameter="{Binding ElementName=fromBox}"/>
@@ -202,7 +420,8 @@
                     </i:Interaction.Triggers>
                 </ComboBox>
                 <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " на счет "/>
-                <ComboBox x:Name="toBox" ItemsSource="{Binding Bank.Accounts}" DisplayMemberPath="Number" IsEnabled="{Binding FromIsSelected}">
+                <ComboBox x:Name="toBox" ItemsSource="{Binding Bank.Accounts}" DisplayMemberPath="Number" IsEnabled="{Binding FromIsSelected}" IsReadOnly="True" 
+                          Style="{DynamicResource ComboBoxStyle1}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction Command="{Binding ToSelectedCommand}" CommandParameter="{Binding ElementName=toBox}"/>
@@ -211,31 +430,28 @@
                 </ComboBox>
                 <TextBlock Foreground="LightGreen" VerticalAlignment="Center" Text = " Сумма "/>
                 <TextBox Width="70" Foreground="Yellow" Background="Black" Text="{Binding TransferAmount}" IsEnabled="{Binding TransferEnabled}"/>
-                <Button Style="{StaticResource headerBtn}" Content="Перевести" IsEnabled="{Binding TransferEnabled}" Command="{Binding DoTransferCommand}" />
+                <Button Style="{StaticResource headerBtn}" Background="Transparent" Content="Перевести" IsEnabled="{Binding TransferEnabled}" Command="{Binding DoTransferCommand}" />
             </StackPanel>
-            <Button Grid.Column="0" Grid.Row="2" Content="Sort Departments" Style="{StaticResource headerBtn}" 
-                    Command="{Binding SortByNameCommand}" CommandParameter="{Binding ElementName=depListView}">
-            </Button>
+            <Button Grid.Column="0" Grid.Row="2" Content="Sort Departments" Style="{StaticResource headerBtn}" Background="Transparent"
+                    Command="{Binding SortByNameCommand}" CommandParameter="{Binding ElementName=depListView}"/>
             <Button Grid.Column="1" Grid.Row="2" Content="Sort Clients" Style="{StaticResource headerBtn}" IsEnabled="{Binding ClientSortEnabled}"
-                    Command="{Binding SortByNameCommand}" CommandParameter="{Binding ElementName=clientListView}">
-            </Button>
+                    Command="{Binding SortByNameCommand}" CommandParameter="{Binding ElementName=clientListView}" Background="Transparent" />
             <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" IsEnabled="{Binding AccSortEnabled}">
                 <TextBlock Text="Sort Accounts by " Foreground="LightBlue"  Style="{StaticResource headerText}"/>
-                <Button Content="Number" Style="{StaticResource headerBtn}" 
+                <Button Content="Number" Style="{StaticResource headerBtn}" Background="Transparent"
                         Command="{Binding AccSortByNmbCommand}" CommandParameter="{Binding ElementName=accListView}"/>
-                <Button Content="Size" Style="{StaticResource headerBtn}" Command="{Binding AccSortBySizeCommand}" CommandParameter="{Binding ElementName=accListView}"/>
-                <Button Content="Rate" Style="{StaticResource headerBtn}" Command="{Binding AccSortByRateCommand}" CommandParameter="{Binding ElementName=accListView}"/>
+                <Button Content="Size" Style="{StaticResource headerBtn}" Background="Transparent"
+                        Command="{Binding AccSortBySizeCommand}" CommandParameter="{Binding ElementName=accListView}"/>
+                <Button Content="Rate" Style="{StaticResource headerBtn}" Background="Transparent"
+                        Command="{Binding AccSortByRateCommand}" CommandParameter="{Binding ElementName=accListView}"/>
             </StackPanel>
             <DataGrid RowHeaderStyle="{StaticResource BlackNavy}" x:Name="depGrid" Grid.Row="3" ItemsSource="{Binding Bank.Deps}" AutoGenerateColumns="False" 
-                      Background="{StaticResource mainBckgr}">
+                      Style="{StaticResource ResourceKey=BlackNavy}" RowStyle="{StaticResource RowStyle}" CellStyle="{StaticResource CellStyle}">
                 <DataGrid.ColumnHeaderStyle>
                     <Style BasedOn="{StaticResource ResourceKey=BlackNavy}"/>
                 </DataGrid.ColumnHeaderStyle>
-                <DataGrid.RowStyle>
-                    <Style BasedOn="{StaticResource ResourceKey=BlackNavy}"/>
-                </DataGrid.RowStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" EditingElementStyle="{StaticResource EditingCellTextBox}"/>
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -253,15 +469,12 @@
                 </i:Interaction.Triggers>
             </DataGrid>
             <DataGrid Grid.Row="3" Grid.Column="1" RowHeaderStyle="{StaticResource BlackNavy}" x:Name="clientGrid"  ItemsSource="{Binding Clients}" 
-                      AutoGenerateColumns="False" Background="{StaticResource mainBckgr}">
+                      AutoGenerateColumns="False" Style="{StaticResource ResourceKey=BlackNavy}" RowStyle="{StaticResource RowStyle}" CellStyle="{StaticResource CellStyle}">
                 <DataGrid.ColumnHeaderStyle>
                     <Style BasedOn="{StaticResource ResourceKey=BlackNavy}"/>
                 </DataGrid.ColumnHeaderStyle>
-                <DataGrid.RowStyle>
-                    <Style BasedOn="{StaticResource ResourceKey=BlackNavy}"/>
-                </DataGrid.RowStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" EditingElementStyle="{StaticResource EditingCellTextBox}"/>
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -278,18 +491,16 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </DataGrid>
-            <DataGrid RowHeaderStyle="{StaticResource BlackNavy}" Background="{StaticResource mainBckgr}" x:Name="accGrid" Grid.Row="3" Grid.Column="2" ItemsSource="{Binding Accounts}" AutoGenerateColumns="False">
+            <DataGrid RowHeaderStyle="{StaticResource BlackNavy}" x:Name="accGrid" Grid.Row="3" Grid.Column="2" Style="{StaticResource ResourceKey=BlackNavy}" 
+                      ItemsSource="{Binding Accounts}" AutoGenerateColumns="False" RowStyle="{StaticResource RowStyle}" CellStyle="{StaticResource CellStyle}">
                 <DataGrid.ColumnHeaderStyle>
                     <Style BasedOn="{StaticResource ResourceKey=BlackNavy}"/>
                 </DataGrid.ColumnHeaderStyle>
-                <DataGrid.RowStyle>
-                    <Style BasedOn="{StaticResource ResourceKey=BlackNavy}"/>
-                </DataGrid.RowStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Number" Binding="{Binding Number}"/>
-                    <DataGridTextColumn Header="Size" Binding="{Binding Size}"/>
-                    <DataGridTextColumn Header="Rate" Binding="{Binding Rate}"/>
-                    <DataGridCheckBoxColumn Header="Cap" Binding="{Binding Cap}"/>
+                    <DataGridTextColumn IsReadOnly="True" Header="Number" Binding="{Binding Number}"/>
+                    <DataGridTextColumn Header="Size" Binding="{Binding Size}" EditingElementStyle="{StaticResource EditingCellTextBox}"/>
+                    <DataGridTextColumn Header="Rate" Binding="{Binding Rate}" EditingElementStyle="{StaticResource EditingCellTextBox}"/>
+                    <DataGridCheckBoxColumn Header="Cap" Binding="{Binding Cap}" ElementStyle="{StaticResource checkBoxStyle}"/>
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -306,7 +517,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </DataGrid>
-            <ListView x:Name="depListView" Grid.Row="4" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Bank.Deps}">
+            <ListView x:Name="depListView" Grid.Row="4" ItemsSource="{Binding Bank.Deps}">
                 <ListView.Resources>
                     <ContextMenu x:Key="ItemContextMenu">
                         <MenuItem Header="Edit">
@@ -314,6 +525,9 @@
                         </MenuItem>
                     </ContextMenu>
                 </ListView.Resources>
+                <ListView.Style>
+                    <StaticResource ResourceKey="listViewStyle"/>
+                </ListView.Style>
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource ListViewItemStyle1}">
                         <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
@@ -336,19 +550,16 @@
                     <GridView x:Name="depGridView" ColumnHeaderContainerStyle="{StaticResource ResourceKey=BlackNavy}">
                         <GridViewColumn x:Name="depNameColumn" DisplayMemberBinding="{Binding Name}" >
                             <GridViewColumnHeader Command="{Binding SortByNameCommand}" CommandParameter="{Binding ElementName=depListView}" 
-                                                  Template="{DynamicResource GridViewColumnHeaderControlTemplate1}">
-                                Name
-                            </GridViewColumnHeader>
+                                                  Template="{DynamicResource GridViewColumnHeaderControlTemplate1}" Content="Name"/>
                         </GridViewColumn>
                         <GridViewColumn  DisplayMemberBinding="{Binding VoidList}">
-                            <GridViewColumnHeader Command="{Binding AddDepCommand}" CommandParameter="{Binding ElementName=depNameColumn}">
-                                Add Dep
-                            </GridViewColumnHeader>
+                            <GridViewColumnHeader Command="{Binding AddDepCommand}" CommandParameter="{Binding ElementName=depNameColumn}"
+                                                  Template="{DynamicResource GridViewColumnHeaderControlTemplate1}" Content="Add Dep"/>
                         </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
-            <ListView x:Name="clientListView" Grid.Row="4" Grid.Column="1" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Clients}">
+            <ListView x:Name="clientListView" Grid.Row="4" Grid.Column="1" ItemsSource="{Binding Clients}">
                 <ListView.Resources>
                     <ContextMenu x:Name="clientMenu" x:Key="ItemContextMenu">
                         <MenuItem Header="Edit">
@@ -356,6 +567,9 @@
                         </MenuItem>
                     </ContextMenu>
                 </ListView.Resources>
+                <ListView.Style>
+                    <StaticResource ResourceKey="listViewStyle"/>
+                </ListView.Style>
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource ListViewItemStyle1}">
                         <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
@@ -379,20 +593,28 @@
                         <GridViewColumn x:Name="clientNameСolumn" DisplayMemberBinding="{Binding Name}">
                             <GridViewColumnHeader IsEnabled="{Binding ClientSortEnabled}" Command="{Binding SortByNameCommand}" 
                                                   CommandParameter="{Binding ElementName=clientListView}" 
-                                                  Template="{DynamicResource GridViewColumnHeaderControlTemplate1}">
-                                Name
-                            </GridViewColumnHeader>
+                                                  Template="{DynamicResource GridViewColumnHeaderControlTemplate1}" Content="Name"/>
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding VoidList}">
                             <GridViewColumnHeader Command="{Binding AddClientCommand}" CommandParameter="{Binding ElementName=clientNameСolumn}" Width="68" 
-                                                  IsEnabled="{Binding ClientSortEnabled}">
-                                Add Client
-                            </GridViewColumnHeader>
+                                                  IsEnabled="{Binding ClientSortEnabled}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}" Content="Add Client"/>
                         </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
-            <ListView x:Name="accListView" Grid.Row="4" Grid.Column="2" Style="{StaticResource listViewStyle}" ItemsSource="{Binding Accounts}">
+            <ListView x:Name="accListView" Grid.Row="4" Grid.Column="2" ItemsSource="{Binding Accounts}">
+                <ListView.Resources>
+                    <ContextMenu x:Key="ItemContextMenu">
+                        <MenuItem Header="Edit">
+                            <TextBox Text="{Binding Size}"/>
+                            <TextBox Text="{Binding Rate}"/>
+                            <CheckBox IsChecked="{Binding Cap}"/>
+                        </MenuItem>
+                    </ContextMenu>
+                </ListView.Resources>
+                <ListView.Style>
+                    <StaticResource ResourceKey="listViewStyle"/>
+                </ListView.Style>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding AccSelectedCommand}" CommandParameter="{Binding ElementName=accListView}"/>
@@ -403,15 +625,6 @@
                         <MenuItem Header="Remove" Command="{Binding RemoveAccCommand}" IsEnabled="{Binding RemoveAccEnabled}"/>
                     </ContextMenu>
                 </ListView.ContextMenu>
-                <ListView.Resources>
-                    <ContextMenu x:Key="ItemContextMenu">
-                        <MenuItem Header="Edit">
-                            <TextBox Text="{Binding Size}"/>
-                            <TextBox Text="{Binding Rate}"/>
-                            <CheckBox IsChecked="{Binding Cap}"/>
-                        </MenuItem>
-                    </ContextMenu>
-                </ListView.Resources>
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource ListViewItemStyle1}">
                         <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
@@ -424,44 +637,36 @@
                     <GridView ColumnHeaderContainerStyle="{StaticResource ResourceKey=BlackNavy}">
                         <GridViewColumn DisplayMemberBinding="{Binding Number}">
                             <GridViewColumnHeader Command="{Binding AccSortByNmbCommand}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}"
-                                                  CommandParameter="{Binding ElementName=accListView}" IsEnabled="{Binding AccSortEnabled}">
-                                Number
-                            </GridViewColumnHeader>
+                                                  CommandParameter="{Binding ElementName=accListView}" IsEnabled="{Binding AccSortEnabled}" Content="Number"/>
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding Size}">
                             <GridViewColumnHeader Command="{Binding AccSortBySizeCommand}" CommandParameter="{Binding ElementName=accListView}" 
-                                                  IsEnabled="{Binding AccSortEnabled}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}">
-                                Size
-                            </GridViewColumnHeader>
+                                                  IsEnabled="{Binding AccSortEnabled}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}" Content="Size"/>
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding Rate}">
                             <GridViewColumnHeader Command="{Binding AccSortByRateCommand}" CommandParameter="{Binding ElementName=accListView}" 
-                                                  IsEnabled="{Binding AccSortEnabled}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}">
-                                Rate
-                            </GridViewColumnHeader>
+                                                  IsEnabled="{Binding AccSortEnabled}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}" Content="Rate"/>
                         </GridViewColumn>
                         <GridViewColumn Width="40" DisplayMemberBinding="{Binding Cap}">
-                            <GridViewColumnHeader IsEnabled="False">
-                                Cap
-                            </GridViewColumnHeader>
+                            <GridViewColumnHeader IsEnabled="False" Content="Cap"/>
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding VoidList}">
-                            <GridViewColumnHeader Command="{Binding AddAccountCommand}" CommandParameter="{Binding ElementName=accListView}" Width="80" IsEnabled="{Binding AccSortEnabled}">
-                                Add Account
-                            </GridViewColumnHeader>
+                            <GridViewColumnHeader Command="{Binding AddAccountCommand}" CommandParameter="{Binding ElementName=accListView}" 
+                                                  Width="80" IsEnabled="{Binding AccSortEnabled}" Template="{DynamicResource GridViewColumnHeaderControlTemplate1}" Content="Add Account"/>
                         </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
-            <TreeView Grid.Row="5" Grid.ColumnSpan="3" Style="{StaticResource ResourceKey=BlackNavy}" ItemContainerStyle="{StaticResource ResourceKey=BlackNavy}" >
-                <TreeViewItem Header="{Binding Bank.Name}" ItemsSource="{Binding Bank.Deps}" Style="{StaticResource ResourceKey=BlackNavy}">
+            <TreeView Grid.Row="5" Grid.ColumnSpan="3" Style="{StaticResource ResourceKey=BlackNavy}" BorderThickness="0" 
+                      ItemContainerStyle="{StaticResource ResourceKey=BlackNavy}" >
+                <TreeViewItem Header="{Binding Bank.Name}" ItemsSource="{Binding Bank.Deps}" Style="{StaticResource ResourceKey=Transp}">
                     <TreeViewItem.ItemTemplate>
                         <DataTemplate>
-                            <TreeViewItem Header="{Binding Name}" ItemsSource="{Binding Clients}" Style="{StaticResource ResourceKey=BlackNavy}">
+                            <TreeViewItem Header="{Binding Name}" ItemsSource="{Binding Clients}" Style="{StaticResource ResourceKey=Transp}">
                                 <TreeViewItem.ItemTemplate>
                                     <DataTemplate>
-                                        <TreeViewItem Header="{Binding Name}" ItemsSource="{Binding Accounts}" Style="{StaticResource ResourceKey=BlackNavy}" 
-                                                      ItemContainerStyle="{StaticResource ResourceKey=BlackNavy}"/>
+                                        <TreeViewItem Header="{Binding Name}" ItemsSource="{Binding Accounts}" Style="{StaticResource ResourceKey=Transp}" 
+                                                      ItemContainerStyle="{StaticResource ResourceKey=Transp}"/>
                                     </DataTemplate>
                                 </TreeViewItem.ItemTemplate>
                             </TreeViewItem>
